@@ -3,48 +3,40 @@ import { Link } from "react-router-dom";
 import { PRODUCTS, CATEGORIES, HERO_SLIDES } from "./data";
 import ProductCard from "./components/ProductCard";
 
-// ---------- StarRating (import if needed elsewhere, but ProductCard already uses it) ----------
-import StarRating from "./components/StarRating"; // Not needed here directly, but we keep the import for future
-
-// ---------- Hero (same as before) ----------
-function Hero({ slide, onNext, onPrev, index }) {
-  // … (exactly the same as in previous code, no changes needed)
-  // I'll include the full Hero component for completeness
+// ---------- Hero (responsive, no arrows) ----------
+function Hero({ slide, index }) {
   return (
-    <div className="relative min-h-[520px] md:min-h-[620px] flex items-center overflow-hidden">
+    <div className="relative min-h-[400px] md:min-h-[580px] flex items-center overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
         style={{ backgroundImage: `url(${slide.img})` }}
       />
       <div className={`absolute inset-0 bg-gradient-to-br ${slide.bg} opacity-90`} />
+      {/* Decorative blobs – hidden on small screens to reduce clutter */}
       <div
-        className="absolute -right-32 -top-32 w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
+        className="absolute -right-32 -top-32 w-[600px] h-[600px] rounded-full blur-3xl opacity-20 hidden md:block"
         style={{ background: slide.accent }}
       />
       <div
-        className="absolute right-32 bottom-0 w-80 h-80 rounded-full blur-xl opacity-10"
+        className="absolute right-32 bottom-0 w-80 h-80 rounded-full blur-xl opacity-10 hidden md:block"
         style={{ background: slide.accent }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 py-24 w-full relative z-10">
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-24 w-full relative z-10">
         <div className="max-w-2xl">
           <p className="text-xs font-semibold tracking-[0.2em] uppercase mb-4" style={{ color: slide.accent }}>
             New Reagents 2026
           </p>
           <h1
-            className="text-5xl md:text-7xl font-bold text-white leading-none mb-6 whitespace-pre-line drop-shadow-2xl"
+            className="text-3xl sm:text-5xl md:text-7xl font-bold text-white leading-none mb-6 whitespace-pre-line drop-shadow-2xl"
             style={{ fontFamily: "'Georgia', serif", letterSpacing: "-0.03em" }}
           >
             {slide.headline}
           </h1>
-          <p className="text-stone-200 text-lg mb-10 max-w-md leading-relaxed">{slide.sub}</p>
+          <p className="text-stone-200 text-base md:text-lg mb-6 md:mb-10 max-w-md leading-relaxed">
+            {slide.sub}
+          </p>
           <div className="flex items-center gap-4">
-            {/* <button
-              className="px-8 py-3.5 font-semibold text-sm rounded-full text-stone-900 shadow-xl shadow-black/20 hover:scale-105 active:scale-100 transition-all"
-              style={{ background: slide.accent }}
-            >
-              {slide.cta} →
-            </button> */}
             <button className="px-8 py-3.5 font-semibold text-sm rounded-full border border-white/20 text-white hover:bg-white/5 hover:border-white/40 transition-all">
               View Catalog
             </button>
@@ -53,7 +45,7 @@ function Hero({ slide, onNext, onPrev, index }) {
       </div>
 
       {/* Slide indicators */}
-      <div className="absolute bottom-8 left-6 flex items-center gap-3 z-10">
+      <div className="absolute bottom-6 left-6 flex items-center gap-3 z-10">
         {HERO_SLIDES.map((_, i) => (
           <div
             key={i}
@@ -65,32 +57,16 @@ function Hero({ slide, onNext, onPrev, index }) {
           />
         ))}
       </div>
-      <button
-        onClick={onPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all z-10 backdrop-blur-sm"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-      <button
-        onClick={onNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all z-10 backdrop-blur-sm"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
+      {/* Arrow buttons removed as requested */}
     </div>
   );
 }
 
-// ---------- Home Header (search, cart, wishlist) – unchanged ----------
+// ---------- HomeHeader (unchanged, still available) ----------
 function HomeHeader({ cartCount, wishlistCount, onCartOpen, searchQuery, setSearchQuery }) {
   return (
     <div className="bg-white/80 backdrop-blur-lg border-b border-stone-100 sticky top-16 z-30">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-4">
-        {/* Search bar */}
         <div className="flex-1 flex items-center bg-stone-100/80 rounded-full px-4 py-2 gap-2 border border-stone-200/60 max-w-md">
           <svg className="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -132,7 +108,6 @@ function HomeHeader({ cartCount, wishlistCount, onCartOpen, searchQuery, setSear
   );
 }
 
-// PromoBar
 function PromoBar() {
   const msgs = ["Free shipping on orders over $150", "Lab-grade purity guaranteed", "Bulk discounts available"];
   const [i, setI] = useState(0);
@@ -187,21 +162,10 @@ export default function Home({
   return (
     <div>
       <PromoBar />
-      <Hero
-        slide={HERO_SLIDES[heroIdx]}
-        index={heroIdx}
-        onNext={() => setHeroIdx((i) => (i + 1) % HERO_SLIDES.length)}
-        onPrev={() => setHeroIdx((i) => (i - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
-      />
-      {/* <HomeHeader
-        cartCount={cart.reduce((s, i) => s + i.qty, 0)}
-        wishlistCount={wishlist.length}
-        onCartOpen={() => setCartOpen(true)}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      /> */}
+      {/* Hero – now without onNext/onPrev props */}
+      <Hero slide={HERO_SLIDES[heroIdx]} index={heroIdx} />
 
-      {/* Category pills */}
+      {/* Category pills – scrollable on small screens */}
       <div className="bg-white/80 backdrop-blur-lg border-b border-stone-100">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-3 overflow-x-auto scrollbar-none">
           {CATEGORIES.map((cat) => (
@@ -253,7 +217,7 @@ export default function Home({
                 {filtered.length} product{filtered.length !== 1 ? "s" : ""} – showing first 8
               </p>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
               {displayedProducts.map((p) => (
                 <ProductCard
                   key={p.id}
@@ -278,9 +242,9 @@ export default function Home({
         )}
       </div>
 
-      {/* Features strip */}
+      {/* Features strip – now stacks on smallest screens */}
       <div className="bg-white/70 backdrop-blur-lg border-y border-stone-100 py-12">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { icon: "🚚", title: "Fast Delivery", desc: "On orders over $150" },
             { icon: "✅", title: "Quality Guarantee", desc: "Lab-grade purity" },
@@ -300,7 +264,7 @@ export default function Home({
         </div>
       </div>
 
-      {/* Newsletter */}
+      {/* Newsletter – input & button stack vertically on small screens */}
       <div className="bg-stone-900 py-16 px-6">
         <div className="max-w-xl mx-auto text-center">
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-amber-400 mb-3">
@@ -312,7 +276,7 @@ export default function Home({
           <p className="text-stone-400 text-sm mb-8">
             Get early access to new chemical releases, exclusive offers, and lab insights.
           </p>
-          <div className="flex gap-2 max-w-sm mx-auto">
+          <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
             <input
               className="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-3 text-sm text-white placeholder-stone-500 outline-none focus:border-amber-400 transition-colors"
               placeholder="your@email.com"
