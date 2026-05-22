@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
@@ -9,6 +9,35 @@ import Footer from "./components/Footer";
 // ---------- Shared Components ----------
 import StarRating from "./components/StarRating";
 import ProductCard from "./components/ProductCard";
+
+// -------- IMPORT YOUR LOGO HERE ----------
+import logo from "./assets/cj-deluz.png";
+
+// ---------- Loading Screen Component ----------
+function LoadingScreen() {
+  return (
+    <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center gap-6 animate-pulse">
+        {/* Logo with a subtle glow */}
+        <div className="relative">
+          <img src={logo} alt="CJ-DELUZ" className="h-20 w-auto" />
+          <div className="absolute inset-0 bg-green-600/10 blur-2xl rounded-full" />
+        </div>
+        
+        {/* Loading spinner */}
+        <div className="relative w-12 h-12">
+          <div className="absolute inset-0 border-4 border-gray-100 rounded-full" />
+          <div className="absolute inset-0 border-4 border-green-600 rounded-full border-t-transparent animate-spin" />
+        </div>
+        
+        {/* Loading text */}
+        <p className="text-xs font-medium tracking-[0.2em] uppercase text-gray-400">
+          Loading
+        </p>
+      </div>
+    </div>
+  );
+}
 
 function CartDrawer({ cart, onClose, onRemove, onUpdateQty }) {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -113,10 +142,11 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
         <Link
           to="/"
-          className="text-xl font-bold tracking-tight text-stone-900"
-          style={{ fontFamily: "'Georgia', serif", letterSpacing: "-0.02em" }}
+          className="flex items-center gap-2"
         >
-          CHEMERA
+          {/* -------- LOGO HERE --------- */}
+          <img src={logo} alt="CJ-DELUZ" className="h-8 w-auto" />
+          <span className="sr-only">CJ-DELUZ</span>
         </Link>
 
         {/* Desktop links */}
@@ -177,6 +207,15 @@ export default function App() {
   const [wishlist, setWishlist] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading delay (remove this in production)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500); // Adjust loading time as needed
+    return () => clearTimeout(timer);
+  }, []);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -203,6 +242,11 @@ export default function App() {
   const toggleWishlist = (id) => {
     setWishlist((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
   };
+
+  // Show loading screen while loading
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <BrowserRouter>

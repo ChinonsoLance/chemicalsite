@@ -10,7 +10,7 @@ export const PRODUCTS = [
     rating: 4.9,
     reviews: 312,
     badge: "Bestseller",
-    img: "https://images.unsplash.com/photo-1609137144813-7d37ab73320f?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem1/400/400",
     color: "#f8f8f8",
   },
   {
@@ -22,7 +22,7 @@ export const PRODUCTS = [
     rating: 4.7,
     reviews: 204,
     badge: null,
-    img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2dc?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem2/400/400",
     color: "#cbdff2",
   },
   {
@@ -34,7 +34,7 @@ export const PRODUCTS = [
     rating: 4.8,
     reviews: 511,
     badge: "Sale",
-    img: "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem3/400/400",
     color: "#f2d0d0",
   },
   {
@@ -46,7 +46,7 @@ export const PRODUCTS = [
     rating: 4.6,
     reviews: 88,
     badge: "New",
-    img: "https://images.unsplash.com/photo-1597063958948-7f77d5a4b0c5?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem4/400/400",
     color: "#cce5ff",
   },
   {
@@ -58,7 +58,7 @@ export const PRODUCTS = [
     rating: 4.8,
     reviews: 176,
     badge: "Sale",
-    img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem5/400/400",
     color: "#d5e8d4",
   },
   {
@@ -70,7 +70,7 @@ export const PRODUCTS = [
     rating: 4.7,
     reviews: 399,
     badge: null,
-    img: "https://images.unsplash.com/photo-1576517042271-0bb0e43eaa8f?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem6/400/400",
     color: "#ffe6cc",
   },
   {
@@ -82,7 +82,7 @@ export const PRODUCTS = [
     rating: 4.8,
     reviews: 142,
     badge: "Sale",
-    img: "https://images.unsplash.com/photo-1614935151651-0bea6508db6b?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem7/400/400",
     color: "#f0e6f6",
   },
   {
@@ -94,7 +94,7 @@ export const PRODUCTS = [
     rating: 4.5,
     reviews: 231,
     badge: "New",
-    img: "https://images.unsplash.com/photo-1582719471137-c39678e3f6eb?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem8/400/400",
     color: "#d3e0ea",
   },
   {
@@ -106,7 +106,7 @@ export const PRODUCTS = [
     rating: 4.9,
     reviews: 289,
     badge: "Bestseller",
-    img: "https://images.unsplash.com/photo-1594751543129-6701ad4442d6?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem9/400/400",
     color: "#e8e8e8",
   },
   {
@@ -118,7 +118,7 @@ export const PRODUCTS = [
     rating: 4.4,
     reviews: 95,
     badge: null,
-    img: "https://images.unsplash.com/photo-1581056784650-2c6b2b0ba415?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem10/400/400",
     color: "#ffffff",
   },
   {
@@ -130,7 +130,7 @@ export const PRODUCTS = [
     rating: 4.9,
     reviews: 67,
     badge: "New",
-    img: "https://images.unsplash.com/photo-1582719471137-c39678e3f6eb?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem11/400/400",
     color: "#ccd5e0",
   },
   {
@@ -142,7 +142,7 @@ export const PRODUCTS = [
     rating: 4.6,
     reviews: 158,
     badge: null,
-    img: "https://images.unsplash.com/photo-1614935151651-0bea6508db6b?w=400&h=400&fit=crop&crop=center",
+    img: "https://picsum.photos/seed/chem12/400/400",
     color: "#ffe0b2",
   },
 ];
@@ -156,7 +156,7 @@ export const HERO_SLIDES = [
     cta: "Shop Reagents",
     bg: "from-stone-900 via-stone-800 to-amber-950",
     accent: "#e9c46a",
-    img: "https://images.unsplash.com/photo-1581093458791-9d4248b5a7a6?w=1200&h=800&fit=crop",
+    img: "https://images.unsplash.com/photo-1581093458791-9d4248b5a7a6?auto=format&fit=crop&w=1200&h=800&q=80",
   },
   {
     headline: "Sale Up\nTo 40% Off",
@@ -164,7 +164,7 @@ export const HERO_SLIDES = [
     cta: "Shop Sale",
     bg: "from-slate-900 via-blue-950 to-slate-800",
     accent: "#90e0ef",
-    img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=1200&h=800&fit=crop",
+    img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&w=1200&h=800&q=80",
   },
   {
     headline: "New Arrivals\nThis Week",
@@ -172,6 +172,6 @@ export const HERO_SLIDES = [
     cta: "Explore New In",
     bg: "from-rose-950 via-stone-900 to-stone-800",
     accent: "#ffb4a2",
-    img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&h=800&fit=crop",
+    img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&h=800&q=80",
   },
 ];

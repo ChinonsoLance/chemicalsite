@@ -1,11 +1,12 @@
+import { useState } from "react";
 import StarRating from "./StarRating";
 
 export default function ProductCard({ product, onAddToCart, onWishlistToggle, isWishlisted }) {
-  // Badge text only (no discount calculation because price is hidden)
   const badgeText = product.badge;
+  const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="group relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-stone-100/80 shadow-sm hover:shadow-2xl hover:shadow-stone-200/50 hover:border-stone-200 transition-all duration-500">
+    <div className="group relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-gray-100/80 shadow-sm hover:shadow-2xl hover:shadow-green-500/20 hover:border-green-500 transition-all duration-500">
       {/* Badge */}
       {badgeText && (
         <div
@@ -13,7 +14,7 @@ export default function ProductCard({ product, onAddToCart, onWishlistToggle, is
             badgeText === "Sale"
               ? "bg-rose-500/90 text-white"
               : badgeText === "New"
-              ? "bg-emerald-500/90 text-white"
+              ? "bg-green-600/90 text-white"
               : "bg-amber-400/90 text-amber-900"
           }`}
         >
@@ -27,7 +28,7 @@ export default function ProductCard({ product, onAddToCart, onWishlistToggle, is
         className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 shadow-sm backdrop-blur-sm flex items-center justify-center transition-all hover:scale-110 opacity-0 group-hover:opacity-100"
       >
         <svg
-          className={`w-4 h-4 ${isWishlisted ? "fill-rose-500 text-rose-500" : "text-stone-400"}`}
+          className={`w-4 h-4 ${isWishlisted ? "fill-rose-500 text-rose-500" : "text-gray-400"}`}
           fill={isWishlisted ? "currentColor" : "none"}
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -42,10 +43,11 @@ export default function ProductCard({ product, onAddToCart, onWishlistToggle, is
       </button>
 
       {/* Image */}
-      <div className="relative h-56 overflow-hidden bg-stone-50">
+      <div className="relative h-56 overflow-hidden bg-gray-50">
         <img
-          src={product.img}
+          src={imgError ? "https://picsum.photos/seed/fallback/400/400" : product.img}
           alt={product.name}
+          onError={() => setImgError(true)}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           loading="lazy"
         />
@@ -54,18 +56,15 @@ export default function ProductCard({ product, onAddToCart, onWishlistToggle, is
 
       {/* Info (no price) */}
       <div className="p-4">
-        {/* <p className="text-[11px] text-stone-400 font-medium tracking-widest uppercase mb-1">
-          {product.category}
-        </p> */}
-        <h3 className="text-sm font-semibold text-stone-800 mb-2 line-clamp-1 group-hover:text-stone-900 transition-colors">
+        <h3 className="text-sm font-semibold text-gray-800 mb-2 line-clamp-1 group-hover:text-black transition-colors">
           {product.name}
         </h3>
         
-        {/* Add to Cart button remains, but no price label */}
+        {/* Add to Cart button */}
         <div className="flex justify-end">
           <button
             onClick={() => onAddToCart(product)}
-            className="w-9 h-9 rounded-full bg-stone-900 text-white flex items-center justify-center hover:bg-stone-700 transition-all hover:scale-110 active:scale-95 shadow-md shadow-stone-200"
+            className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-all hover:scale-110 active:scale-95 shadow-md shadow-black/10"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

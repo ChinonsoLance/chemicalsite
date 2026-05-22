@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { 
+  Search, 
+  Heart, 
+  ShoppingBag, 
+  Truck, 
+  CheckCircle, 
+  Lock, 
+  MessageCircle 
+} from "lucide-react";
 import { PRODUCTS, CATEGORIES, HERO_SLIDES } from "./data";
 import ProductCard from "./components/ProductCard";
 
@@ -11,20 +20,21 @@ function Hero({ slide, index }) {
         className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
         style={{ backgroundImage: `url(${slide.img})` }}
       />
-      <div className={`absolute inset-0 bg-gradient-to-br ${slide.bg} opacity-90`} />
-      {/* Decorative blobs – hidden on small screens to reduce clutter */}
+      {/* Changed gradient to black -> green */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-green-950 to-green-800 opacity-90" />
+      {/* Decorative blobs – green accent */}
       <div
         className="absolute -right-32 -top-32 w-[600px] h-[600px] rounded-full blur-3xl opacity-20 hidden md:block"
-        style={{ background: slide.accent }}
+        style={{ background: "#0d9e4e" }}
       />
       <div
         className="absolute right-32 bottom-0 w-80 h-80 rounded-full blur-xl opacity-10 hidden md:block"
-        style={{ background: slide.accent }}
+        style={{ background: "#0d9e4e" }}
       />
 
       <div className="max-w-7xl mx-auto px-6 py-12 md:py-24 w-full relative z-10">
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase mb-4" style={{ color: slide.accent }}>
+          <p className="text-xs font-semibold tracking-[0.2em] uppercase mb-4 text-green-400">
             New Reagents 2026
           </p>
           <h1
@@ -33,7 +43,7 @@ function Hero({ slide, index }) {
           >
             {slide.headline}
           </h1>
-          <p className="text-stone-200 text-base md:text-lg mb-6 md:mb-10 max-w-md leading-relaxed">
+          <p className="text-gray-200 text-base md:text-lg mb-6 md:mb-10 max-w-md leading-relaxed">
             {slide.sub}
           </p>
           <div className="flex items-center gap-4">
@@ -44,7 +54,7 @@ function Hero({ slide, index }) {
         </div>
       </div>
 
-      {/* Slide indicators */}
+      {/* Slide indicators – green accent */}
       <div className="absolute bottom-6 left-6 flex items-center gap-3 z-10">
         {HERO_SLIDES.map((_, i) => (
           <div
@@ -52,12 +62,11 @@ function Hero({ slide, index }) {
             className="h-0.5 rounded-full transition-all duration-500"
             style={{
               width: i === index ? 32 : 12,
-              background: i === index ? slide.accent : "rgba(255,255,255,0.3)",
+              background: i === index ? "#0d9e4e" : "rgba(255,255,255,0.3)",
             }}
           />
         ))}
       </div>
-      {/* Arrow buttons removed as requested */}
     </div>
   );
 }
@@ -65,39 +74,33 @@ function Hero({ slide, index }) {
 // ---------- HomeHeader (unchanged, still available) ----------
 function HomeHeader({ cartCount, wishlistCount, onCartOpen, searchQuery, setSearchQuery }) {
   return (
-    <div className="bg-white/80 backdrop-blur-lg border-b border-stone-100 sticky top-16 z-30">
+    <div className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-16 z-30">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-4">
-        <div className="flex-1 flex items-center bg-stone-100/80 rounded-full px-4 py-2 gap-2 border border-stone-200/60 max-w-md">
-          <svg className="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+        <div className="flex-1 flex items-center bg-gray-100/80 rounded-full px-4 py-2 gap-2 border border-gray-200/60 max-w-md">
+          <Search className="w-4 h-4 text-gray-400" />
           <input
-            className="bg-transparent text-sm outline-none flex-1 text-stone-700 placeholder-stone-400"
+            className="bg-transparent text-sm outline-none flex-1 text-gray-700 placeholder-gray-400"
             placeholder="Search products..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="flex items-center gap-3">
-          <button className="relative p-2 text-stone-600 hover:text-stone-900 transition-colors group">
-            <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
+          <button className="relative p-2 text-gray-600 hover:text-black transition-colors group">
+            <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
             {wishlistCount > 0 && (
-              <span className="absolute top-0 right-0 w-4 h-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
+              <span className="absolute top-0 right-0 w-4 h-4 bg-green-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
                 {wishlistCount}
               </span>
             )}
           </button>
           <button
-            className="relative p-2 text-stone-600 hover:text-stone-900 transition-colors group"
+            className="relative p-2 text-gray-600 hover:text-black transition-colors group"
             onClick={onCartOpen}
           >
-            <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
+            <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
             {cartCount > 0 && (
-              <span className="absolute top-0 right-0 w-4 h-4 bg-stone-900 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
+              <span className="absolute top-0 right-0 w-4 h-4 bg-black text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
                 {cartCount}
               </span>
             )}
@@ -116,7 +119,7 @@ function PromoBar() {
     return () => clearInterval(t);
   }, []);
   return (
-    <div className="bg-stone-900 text-white text-[11px] font-medium tracking-widest uppercase py-2 text-center">
+    <div className="bg-black text-white text-[11px] font-medium tracking-widest uppercase py-2 text-center">
       {msgs[i]}
     </div>
   );
@@ -166,7 +169,7 @@ export default function Home({
       <Hero slide={HERO_SLIDES[heroIdx]} index={heroIdx} />
 
       {/* Category pills – scrollable on small screens */}
-      <div className="bg-white/80 backdrop-blur-lg border-b border-stone-100">
+      <div className="bg-white/80 backdrop-blur-lg border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-3 overflow-x-auto scrollbar-none">
           {CATEGORIES.map((cat) => (
             <button
@@ -174,8 +177,8 @@ export default function Home({
               onClick={() => setCategory(cat)}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                 category === cat
-                  ? "bg-stone-900 text-white shadow-lg shadow-stone-300"
-                  : "bg-stone-100 text-stone-600 hover:bg-stone-200 hover:text-stone-900"
+                  ? "bg-black text-white shadow-lg shadow-gray-300"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black"
               }`}
             >
               {cat}
@@ -185,7 +188,7 @@ export default function Home({
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="text-sm text-stone-600 bg-transparent border border-stone-200 rounded-full px-3 py-2 outline-none cursor-pointer focus:border-stone-400 transition-colors"
+              className="text-sm text-gray-600 bg-transparent border border-gray-200 rounded-full px-3 py-2 outline-none cursor-pointer focus:border-green-600 transition-colors"
             >
               <option value="featured">Featured</option>
               <option value="newest">Newest</option>
@@ -202,10 +205,10 @@ export default function Home({
         {displayedProducts.length === 0 ? (
           <div className="text-center py-24">
             <span className="text-5xl mb-4 block opacity-30">🔍</span>
-            <p className="text-stone-500">No products found for "{searchQuery}"</p>
+            <p className="text-gray-500">No products found for "{searchQuery}"</p>
             <button
               onClick={() => setSearchQuery("")}
-              className="mt-3 text-sm font-semibold text-stone-900 underline underline-offset-2"
+              className="mt-3 text-sm font-semibold text-black underline underline-offset-2"
             >
               Clear search
             </button>
@@ -213,7 +216,7 @@ export default function Home({
         ) : (
           <>
             <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-stone-500">
+              <p className="text-sm text-gray-500">
                 {filtered.length} product{filtered.length !== 1 ? "s" : ""} – showing first 8
               </p>
             </div>
@@ -232,7 +235,7 @@ export default function Home({
               <div className="flex justify-center mt-10">
                 <Link
                   to="/products"
-                  className="px-8 py-3.5 bg-stone-900 text-white font-semibold rounded-full hover:bg-stone-700 transition-all text-sm tracking-wide shadow-lg shadow-stone-200"
+                  className="px-8 py-3.5 bg-black text-white font-semibold rounded-full hover:bg-gray-800 transition-all text-sm tracking-wide shadow-lg shadow-gray-200"
                 >
                   See More Products →
                 </Link>
@@ -243,21 +246,21 @@ export default function Home({
       </div>
 
       {/* Features strip – now stacks on smallest screens */}
-      <div className="bg-white/70 backdrop-blur-lg border-y border-stone-100 py-12">
+      <div className="bg-white/70 backdrop-blur-lg border-y border-gray-200 py-12">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { icon: "🚚", title: "Fast Delivery", desc: "On orders over $150" },
-            { icon: "✅", title: "Quality Guarantee", desc: "Lab-grade purity" },
-            { icon: "🔒", title: "Secure Checkout", desc: "Encrypted transactions" },
-            { icon: "💬", title: "Expert Support", desc: "Chemists ready to help" },
-          ].map((f) => (
+            { icon: Truck, title: "Fast Delivery", desc: "On orders over $150" },
+            { icon: CheckCircle, title: "Quality Guarantee", desc: "Lab-grade purity" },
+            { icon: Lock, title: "Secure Checkout", desc: "Encrypted transactions" },
+            { icon: MessageCircle, title: "Expert Support", desc: "Chemists ready to help" },
+          ].map((f, idx) => (
             <div key={f.title} className="flex items-start gap-3 group">
-              <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
-                {f.icon}
-              </span>
+              <div className="text-green-600 group-hover:text-green-700 transition-colors">
+                <f.icon className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
+              </div>
               <div>
-                <p className="text-sm font-bold text-stone-800">{f.title}</p>
-                <p className="text-xs text-stone-400 mt-0.5">{f.desc}</p>
+                <p className="text-sm font-bold text-black">{f.title}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{f.desc}</p>
               </div>
             </div>
           ))}
@@ -265,28 +268,28 @@ export default function Home({
       </div>
 
       {/* Newsletter – input & button stack vertically on small screens */}
-      <div className="bg-stone-900 py-16 px-6">
+      <div className="bg-black py-16 px-6">
         <div className="max-w-xl mx-auto text-center">
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-amber-400 mb-3">
+          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-green-400 mb-3">
             Stay in the loop
           </p>
           <h2 className="text-3xl font-bold text-white mb-3" style={{ fontFamily: "'Georgia', serif" }}>
-            Join the CHEMERA community
+            Join the CJ Delux community
           </h2>
-          <p className="text-stone-400 text-sm mb-8">
+          <p className="text-gray-400 text-sm mb-8">
             Get early access to new chemical releases, exclusive offers, and lab insights.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
             <input
-              className="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-3 text-sm text-white placeholder-stone-500 outline-none focus:border-amber-400 transition-colors"
+              className="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-green-400 transition-colors"
               placeholder="your@email.com"
             />
-            <button className="px-5 py-3 bg-amber-400 text-amber-900 font-semibold rounded-full text-sm hover:bg-amber-300 transition-all whitespace-nowrap shadow-lg shadow-amber-400/20">
+            <button className="px-5 py-3 bg-green-600 text-white font-semibold rounded-full text-sm hover:bg-green-500 transition-all whitespace-nowrap shadow-lg shadow-green-600/20">
               Subscribe
             </button>
           </div>
         </div>
-      </div>      
+      </div>
     </div>
   );
 }
