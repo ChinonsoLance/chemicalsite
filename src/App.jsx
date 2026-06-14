@@ -145,7 +145,7 @@ function Navbar() {
           className="flex items-center gap-2"
         >
           {/* -------- LOGO HERE --------- */}
-          <img src={logo} alt="CJ-DELUZ" className="h-8 w-auto" />
+          <img src={logo} alt="CJ-DELUZ" className="h-18 w-auto" />
           <span className="sr-only">CJ-DELUZ</span>
         </Link>
 
