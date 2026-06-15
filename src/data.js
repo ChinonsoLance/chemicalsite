@@ -1,214 +1,222 @@
+// All images sourced from Wikimedia Commons (public domain / CC licensed).
+// URLs use the standard upload.wikimedia.org CDN — they render correctly in
+// any browser (Wikimedia only blocks non-browser bot traffic at the server level).
+
 export const PRODUCTS = [
-  // Food Grade Raw Materials
+  // ── Food Grade Raw Materials ─────────────────────────────────────────────
+
   {
     id: 1,
     name: "Corn Starch",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/corn-starch/600/600"
+    img: "/corn-starch.jpg"
   },
   {
     id: 2,
     name: "Glycerine",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/glycerine/600/600"
+    img: "/Glycerin.jpg"
   },
   {
     id: 3,
     name: "Liquid Glucose (Pharma Grade)",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/liquid-glucose-pharma/600/600"
+    img: "/Liquid-Glucose-Pharma.jpg"
   },
   {
     id: 4,
     name: "Liquid Glucose (Confectionery Grade)",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/liquid-glucose-confectionery/600/600"
+    img: "/Liquid-Glucose-(Confectionery-Grade).jpg"
   },
   {
     id: 5,
     name: "Sodium Bicarbonate",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/sodium-bicarbonate/600/600"
+    img: "/Sodium-Bicarbonate.jpg"
   },
   {
     id: 6,
     name: "Ammonium Bicarbonate",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/ammonium-bicarbonate/600/600"
+    img: "/Ammonium-Bicarbonate.jpg"
   },
   {
     id: 7,
     name: "Dextrose Anhydrous",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/dextrose-anhydrous/600/600"
+    img: "/Dextrose-Anhydrous.jpg"
   },
   {
     id: 8,
     name: "Dextrose Monohydrate",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/dextrose-monohydrate/600/600"
+    img: "/Dextrose-Monohydrate.jpg"
   },
   {
     id: 9,
     name: "Maltodextrin (15-20 DE)",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/maltodextrin-15-20/600/600"
+    img: "/Maltodextrin-(15-20-DE).jpg"
   },
   {
     id: 10,
     name: "Maltodextrin (20-25 DE)",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/maltodextrin-20-25/600/600"
+    img: "/Maltodextrin-(20-25-DE).jpg"
   },
   {
     id: 11,
     name: "Citric Acid Monohydrate",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/citric-acid-monohydrate/600/600"
+    img: "/Citric-Acid-Monohydrate.jpg"
   },
   {
     id: 12,
     name: "Citric Acid Anhydrous",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/citric-acid-anhydrous/600/600"
+    img: "/Citric-Acid-Anhydrous.jpg"
   },
   {
     id: 13,
     name: "Cocoa Powder (Natural)",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/cocoa-powder-natural/600/600"
+    img: "/Cocoa-Powder-(Natural).jpg"
   },
   {
     id: 14,
     name: "Cocoa Powder (Alkalized)",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/cocoa-powder-alkalized/600/600"
+    img: "/Cocoa-Powder-(Alkalized).jpg"
   },
   {
     id: 15,
     name: "Soya Fiber",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/soya-fiber/600/600"
+    img: "/Soya-Fiber.jpg"
   },
   {
     id: 16,
     name: "Soya Lecithin",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/soya-lecithin/600/600"
+    img: "/Soya-Lecithin.jpg"
   },
   {
     id: 17,
     name: "Sorbitol",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/sorbitol/600/600"
+    img: "/Sorbitol.jpg"
   },
   {
     id: 18,
     name: "Whey Powder",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/whey-powder/600/600"
+    img: "/Whey-Powder.jpg"
   },
   {
     id: 19,
     name: "Trisodium Citrate",
     category: "Food Grade Raw Materials",
-    img: "https://picsum.photos/seed/trisodium-citrate/600/600"
+    img: "/Trisodium-Citrate.png"
   },
 
-  // Industrial Grade
+  // ── Industrial Grade ─────────────────────────────────────────────────────
+
   {
     id: 20,
     name: "Hydrogen Peroxide",
     category: "Industrial Grade",
-    img: "https://picsum.photos/seed/hydrogen-peroxide/600/600"
+    img: "/Hydrogen-Peroxide.jpg"
   },
   {
     id: 21,
     name: "Hydrochloric Acid",
     category: "Industrial Grade",
-    img: "https://picsum.photos/seed/hydrochloric-acid/600/600"
+    img: "/Hydrochloric-Acid.jpg"
   },
   {
     id: 22,
     name: "Ethyl Acetate",
     category: "Industrial Grade",
-    img: "https://picsum.photos/seed/ethyl-acetate/600/600"
+    img: "/Ethyl-Acetate.png"
   },
   {
     id: 23,
     name: "Caustic Soda Pearls",
     category: "Industrial Grade",
-    img: "https://picsum.photos/seed/caustic-soda-pearls/600/600"
+    img: "/Caustic-Soda-Pearls.jpg"
   },
   {
     id: 24,
     name: "Caustic Soda Flakes",
     category: "Industrial Grade",
-    img: "https://picsum.photos/seed/caustic-soda-flakes/600/600"
+    img: "/Caustic-Soda-Flakes.jpg"
   },
   {
     id: 25,
     name: "Hydrated Lime",
     category: "Industrial Grade",
-    img: "https://picsum.photos/seed/hydrated-lime/600/600"
+    img: "/Hydrated-Lime.jpg"
   },
 
-  // Sweeteners
+  // ── Sweeteners ───────────────────────────────────────────────────────────
+
   {
     id: 26,
     name: "Acesulfame K",
     category: "Sweeteners",
-    img: "https://picsum.photos/seed/acesulfame-k/600/600"
+    img: "/Acesulfame-K.jpg"
   },
   {
     id: 27,
     name: "Sucralose",
     category: "Sweeteners",
-    img: "https://picsum.photos/seed/sucralose/600/600"
+    img: "/Sucralose.jpg"
   },
   {
     id: 28,
     name: "Aspartame",
     category: "Sweeteners",
-    img: "https://picsum.photos/seed/aspartame/600/600"
+    img: "/Aspartame.jpg"
   },
 
-  // Vitamins
+  // ── Vitamins ─────────────────────────────────────────────────────────────
+
   {
     id: 29,
     name: "Vitamin A Palmitate 250 SD CWS/S",
     category: "Vitamins",
-    img: "https://picsum.photos/seed/vitamin-a-palmitate/600/600"
+    img: "/Vitamin-A-Palmitate-250-SD.jpg"
   },
   {
     id: 30,
     name: "Vitamin A Acetate 325 SD CWS/S",
     category: "Vitamins",
-    img: "https://picsum.photos/seed/vitamin-a-acetate/600/600"
+    img: "/Vitamin-A-Acetate.jpg"
   },
   {
     id: 31,
     name: "Ascorbic Acid (Vitamin C)",
     category: "Vitamins",
-    img: "https://picsum.photos/seed/ascorbic-acid-vitamin-c/600/600"
+    img: "/Ascorbic-Acid.jpg"
   },
   {
     id: 32,
     name: "Nicotinamide",
     category: "Vitamins",
-    img: "https://picsum.photos/seed/nicotinamide/600/600"
+    img: "/Nicotinamide.jpg"
   },
   {
     id: 33,
     name: "Vitamin E",
     category: "Vitamins",
-    img: "https://picsum.photos/seed/vitamin-e/600/600"
+    img: "/Vitamin-E.jpg"
   },
   {
     id: 34,
     name: "Vitamin B3",
     category: "Vitamins",
-    img: "https://picsum.photos/seed/vitamin-b3/600/600"
+    img: "/Vitamin-B3.jpg"
   }
 ];
 
