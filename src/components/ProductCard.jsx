@@ -61,7 +61,7 @@ export default function ProductCard({ product, onAddToCart, onWishlistToggle, is
         </h3>
         
         {/* Add to Cart button */}
-        <div className="flex justify-end">
+        {/* <div className="flex justify-end">
           <button
             onClick={() => onAddToCart(product)}
             className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-all hover:scale-110 active:scale-95 shadow-md shadow-black/10"
@@ -70,7 +70,7 @@ export default function ProductCard({ product, onAddToCart, onWishlistToggle, is
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

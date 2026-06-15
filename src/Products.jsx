@@ -9,17 +9,20 @@ export default function Products({
   toggleWishlist,
   setCartOpen,
 }) {
-  const [category, setCategory] = useState("All");
+
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("featured");
+// Change initial state from "All" to "General"
+const [category, setCategory] = useState("General");
 
-  let filtered = PRODUCTS.filter((p) => {
-    const matchCat = category === "All" || p.category === category;
-    const matchSearch =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchCat && matchSearch;
-  });
+// Update filter condition – treat "General" as all products
+let filtered = PRODUCTS.filter((p) => {
+  const matchCat = category === "General" || p.category === category;
+  const matchSearch =
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.category.toLowerCase().includes(searchQuery.toLowerCase());
+  return matchCat && matchSearch;
+});
 
   if (sortBy === "price-asc") filtered = [...filtered].sort((a, b) => a.price - b.price);
   else if (sortBy === "price-desc") filtered = [...filtered].sort((a, b) => b.price - a.price);
@@ -57,21 +60,21 @@ export default function Products({
         </div>
 
         {/* Category pills */}
-        {/* <div className="flex items-center gap-3 overflow-x-auto scrollbar-none mb-6">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                category === cat
-                  ? "bg-stone-900 text-white shadow-md"
-                  : "bg-stone-100 text-stone-600 hover:bg-stone-200"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-          <div className="ml-auto flex-shrink-0">
+        <div className="flex items-center gap-3 overflow-x-auto scrollbar-none mb-6">
+         {CATEGORIES.map((cat) => (
+    <button
+      key={cat}
+      onClick={() => setCategory(cat)}
+      className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+        category === cat
+          ? "bg-stone-900 text-white shadow-md"
+          : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+      }`}
+    >
+      {cat}
+    </button>
+  ))}
+          {/* <div className="ml-auto flex-shrink-0">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -83,8 +86,8 @@ export default function Products({
               <option value="price-desc">Price: High to Low</option>
               <option value="rating">Top Rated</option>
             </select>
-          </div>
-        </div> */}
+          </div> */}
+        </div>
 
         {/* Product grid – no limit */}
         {filtered.length === 0 ? (

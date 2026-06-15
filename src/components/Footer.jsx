@@ -1,4 +1,6 @@
 // src/components/Footer.jsx
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer className="bg-stone-950 text-stone-400 py-12 px-6">
@@ -12,16 +14,28 @@ export default function Footer() {
           </p>
         </div>
         {[
-          { title: "Chemera", links: ["New Reagents", "Solvents", "Glassware", "Equipment", "Safety", "Sale"] },
-          { title: "Help", links: ["Contact Us", "Safety Data", "FAQs", "Track Order"] },
-            
+          {
+            title: "Chemera",
+            links: ["General", "Food Grade Raw Materials", "Industrial Grade", "Sweeteners", "Vitamins"],
+            path: "/products", // all category links go to Products page
+          },
+          {
+            title: "Help",
+            links: ["Contact Us"],
+            path: "/contact", // Contact Us goes to Contact page
+          },
         ].map((col) => (
           <div key={col.title}>
             <p className="text-white text-xs font-bold uppercase tracking-widest mb-4">{col.title}</p>
             <ul className="space-y-2">
               {col.links.map((l) => (
                 <li key={l}>
-                  <button className="text-xs hover:text-white transition-colors">{l}</button>
+                  <Link
+                    to={col.path}
+                    className="text-xs hover:text-white transition-colors"
+                  >
+                    {l}
+                  </Link>
                 </li>
               ))}
             </ul>

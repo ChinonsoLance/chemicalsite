@@ -221,7 +221,7 @@ export const PRODUCTS = [
 ];
 
 export const CATEGORIES = [
-  "All",
+  "General",
   "Food Grade Raw Materials",
   "Industrial Grade",
   "Sweeteners",
