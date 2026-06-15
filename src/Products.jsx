@@ -57,7 +57,7 @@ export default function Products({
         </div>
 
         {/* Category pills */}
-        <div className="flex items-center gap-3 overflow-x-auto scrollbar-none mb-6">
+        {/* <div className="flex items-center gap-3 overflow-x-auto scrollbar-none mb-6">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -84,7 +84,7 @@ export default function Products({
               <option value="rating">Top Rated</option>
             </select>
           </div>
-        </div>
+        </div> */}
 
         {/* Product grid – no limit */}
         {filtered.length === 0 ? (

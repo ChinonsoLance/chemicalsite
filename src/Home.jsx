@@ -169,7 +169,7 @@ export default function Home({
       <Hero slide={HERO_SLIDES[heroIdx]} index={heroIdx} />
 
       {/* Category pills – scrollable on small screens */}
-      <div className="bg-white/80 backdrop-blur-lg border-b border-gray-200">
+      {/* <div className="bg-white/80 backdrop-blur-lg border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-3 overflow-x-auto scrollbar-none">
           {CATEGORIES.map((cat) => (
             <button
@@ -198,7 +198,7 @@ export default function Home({
             </select>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Products grid (max 8) */}
       <div className="max-w-7xl mx-auto px-6 py-10">
