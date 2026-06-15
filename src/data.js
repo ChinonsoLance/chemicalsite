@@ -21,7 +21,7 @@ export const PRODUCTS = [
     id: 3,
     name: "Liquid Glucose (Pharma Grade)",
     category: "Food Grade Raw Materials",
-    img: "/Liquid-Glucose-Pharma.jpg"
+    img: "/LIquid-Glucose-Pharma.jpg"
   },
   {
     id: 4,
@@ -192,7 +192,7 @@ export const PRODUCTS = [
     id: 30,
     name: "Vitamin A Acetate 325 SD CWS/S",
     category: "Vitamins",
-    img: "/Vitamin-A-Acetate.jpg"
+    img: "/vitamin-a-acetate-325-cws-retinyl-acetate.jpg"
   },
   {
     id: 31,
