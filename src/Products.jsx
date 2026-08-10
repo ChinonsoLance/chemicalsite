@@ -1,120 +1,139 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { Search, X } from "lucide-react";
 import { PRODUCTS, CATEGORIES } from "./data";
 import ProductCard from "./components/ProductCard";
+import { Reveal, DrawRule, SplitHeading, Parallax } from "./components/Motion";
 
-export default function Products({
-  cart,
-  wishlist,
-  addToCart,
-  toggleWishlist,
-  setCartOpen,
-}) {
-
+export default function Products({ wishlist = [], toggleWishlist }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("featured");
-// Change initial state from "All" to "General"
-const [category, setCategory] = useState("General");
+  const [category, setCategory] = useState("General");
 
-// Update filter condition – treat "General" as all products
-let filtered = PRODUCTS.filter((p) => {
-  const matchCat = category === "General" || p.category === category;
-  const matchSearch =
-    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.category.toLowerCase().includes(searchQuery.toLowerCase());
-  return matchCat && matchSearch;
-});
-
-  if (sortBy === "price-asc") filtered = [...filtered].sort((a, b) => a.price - b.price);
-  else if (sortBy === "price-desc") filtered = [...filtered].sort((a, b) => b.price - a.price);
-  else if (sortBy === "rating") filtered = [...filtered].sort((a, b) => b.rating - a.rating);
-  else if (sortBy === "newest")
-    filtered = [...filtered]
-      .filter((p) => p.badge === "New")
-      .concat(filtered.filter((p) => p.badge !== "New"));
+  const filtered = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return PRODUCTS.filter((p) => {
+      const matchCat = category === "General" || p.category === category;
+      const matchSearch =
+        !q ||
+        p.name.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q);
+      return matchCat && matchSearch;
+    });
+  }, [searchQuery, category]);
 
   return (
-    <div className="min-h-screen bg-stone-50 pt-20">
-      {/* PromoBar? We can reuse it, but for simplicity we'll just do a top section */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
-        <h1 className="text-3xl font-bold text-stone-900 mb-2" style={{ fontFamily: "'Georgia', serif" }}>
-          All Products
-        </h1>
-        <p className="text-stone-500 text-sm mb-6">
-          Browse our complete catalogue of high‑purity chemicals and lab supplies.
-        </p>
+    <div className="min-h-screen">
+      {/* Chapter header */}
+      <section className="relative overflow-hidden pb-16 pt-[calc(var(--nav-h)+5rem)] md:pb-20 md:pt-[calc(var(--nav-h)+8rem)]">
+        <Parallax speed={0.1} className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-32 left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-jade-600/10 blur-[130px]" />
+        </Parallax>
 
-        {/* Search bar */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="flex items-center bg-white rounded-full px-4 py-2 gap-2 border border-stone-200 max-w-md flex-1">
-            <svg className="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              className="bg-transparent text-sm outline-none flex-1 text-stone-700 placeholder-stone-400"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+        <div className="relative mx-auto max-w-[var(--shell)] px-5 sm:px-8">
+          <Reveal variant="fade">
+            <span className="eyebrow">The catalogue</span>
+          </Reveal>
+
+          <SplitHeading
+            text={"Every material\nwe carry."}
+            as="h1"
+            className="display mt-6 text-[clamp(2.6rem,8vw,6rem)] text-white"
+            stagger={80}
+          />
+
+          <Reveal variant="up" delay={200}>
+            <p className="mt-8 max-w-xl text-[15px] leading-relaxed text-mist/60">
+              {PRODUCTS.length} lines across food-grade, industrial, sweetener
+              and vitamin disciplines — held in stock and documented lot by lot.
+            </p>
+          </Reveal>
+
+          <DrawRule className="mt-14" delay={260} />
+        </div>
+      </section>
+
+      {/* Controls */}
+      <section className="sticky top-[var(--nav-h)] z-30 border-y border-white/8 bg-abyss/70 backdrop-blur-2xl">
+        <div className="mx-auto max-w-[var(--shell)] px-5 py-4 sm:px-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+            <div className="flex flex-1 items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-5 py-2.5 transition-colors focus-within:border-jade-400/50 lg:max-w-sm">
+              <Search className="h-4 w-4 flex-shrink-0 text-jade-300/70" />
+              <input
+                className="w-full bg-transparent text-sm text-white placeholder-mist/35 outline-none"
+                placeholder="Search materials…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="text-mist/40 transition-colors hover:text-white"
+                  aria-label="Clear search"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+
+            <div className="scrollbar-none flex items-center gap-2 overflow-x-auto">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setCategory(cat)}
+                  className={`flex-shrink-0 rounded-full px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] transition-all duration-500 ${
+                    category === cat
+                      ? "bg-jade-500 text-abyss shadow-[0_10px_30px_-12px_rgba(22,184,98,0.9)]"
+                      : "border border-white/10 text-mist/60 hover:border-jade-400/40 hover:text-white"
+                  }`}
+                >
+                  {cat === "General" ? "All" : cat}
+                </button>
+              ))}
+            </div>
+
+            <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-mist/35 lg:ml-auto lg:block">
+              {String(filtered.length).padStart(2, "0")} results
+            </span>
           </div>
-          
         </div>
+      </section>
 
-        {/* Category pills */}
-        <div className="flex items-center gap-3 overflow-x-auto scrollbar-none mb-6">
-         {CATEGORIES.map((cat) => (
-    <button
-      key={cat}
-      onClick={() => setCategory(cat)}
-      className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-        category === cat
-          ? "bg-stone-900 text-white shadow-md"
-          : "bg-stone-100 text-stone-600 hover:bg-stone-200"
-      }`}
-    >
-      {cat}
-    </button>
-  ))}
-          {/* <div className="ml-auto flex-shrink-0">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="text-sm text-stone-600 bg-transparent border border-stone-200 rounded-full px-3 py-2 outline-none cursor-pointer focus:border-stone-400 transition-colors"
-            >
-              <option value="featured">Featured</option>
-              <option value="newest">Newest</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="rating">Top Rated</option>
-            </select>
-          </div> */}
-        </div>
-
-        {/* Product grid – no limit */}
+      {/* Grid */}
+      <section className="mx-auto max-w-[var(--shell)] px-5 py-16 sm:px-8 md:py-24">
         {filtered.length === 0 ? (
-          <div className="text-center py-16">
-            <span className="text-5xl mb-4 block opacity-30">🔍</span>
-            <p className="text-stone-500">No products found for "{searchQuery}"</p>
+          <div className="py-28 text-center">
+            <p className="display text-4xl text-white/80">Nothing here yet</p>
+            <p className="mt-4 text-sm text-mist/50">
+              No material matches “{searchQuery}”.
+            </p>
             <button
-              onClick={() => setSearchQuery("")}
-              className="mt-3 text-sm font-semibold text-stone-900 underline underline-offset-2"
+              onClick={() => {
+                setSearchQuery("");
+                setCategory("General");
+              }}
+              className="btn-ghost mt-8 rounded-full px-7 py-3 text-[11px] uppercase tracking-[0.2em]"
             >
-              Clear search
+              Reset filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {filtered.map((p) => (
-              <ProductCard
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
+            {filtered.map((p, i) => (
+              <Reveal
                 key={p.id}
-                product={p}
-                onAddToCart={addToCart}
-                onWishlistToggle={toggleWishlist}
-                isWishlisted={wishlist.includes(p.id)}
-              />
+                variant="up"
+                delay={(i % 4) * 90}
+                className="h-full"
+              >
+                <ProductCard
+                  product={p}
+                  onWishlistToggle={toggleWishlist}
+                  isWishlisted={wishlist.includes(p.id)}
+                />
+              </Reveal>
             ))}
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

@@ -1,143 +1,264 @@
-// About.jsx
+// About.jsx — the story chapter of the scrolly narrative.
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { Reveal, DrawRule, SplitHeading, Parallax, Counter } from "./components/Motion";
+import { PRODUCTS } from "./data";
 
 const values = [
   {
-    icon: "⚗️",
-    title: "Uncompromising Purity",
-    description: "Every product is rigorously tested to meet or exceed ACS, HPLC, and pharmacopoeia standards.",
+    index: "01",
+    title: "Uncompromising purity",
+    description:
+      "Materials are accepted against specification, not against a promise. Off-spec stock does not enter the warehouse.",
   },
   {
-    icon: "🧬",
-    title: "Scientific Integrity",
-    description: "We source only from audited suppliers and maintain full traceability from raw material to final shipment.",
+    index: "02",
+    title: "Traceable by lot",
+    description:
+      "Supplier, batch, manufacture date and certificate travel with the product all the way to your goods-in bay.",
   },
   {
-    icon: "♻️",
-    title: "Sustainable Lab",
-    description: "Minimal‑waste packaging, solvent recycling programmes, and carbon‑neutral courier options.",
+    index: "03",
+    title: "Responsible handling",
+    description:
+      "Segregated storage by grade, controlled decanting, and packaging designed to survive Nigerian logistics.",
   },
   {
-    icon: "🤝",
-    title: "Community First",
-    description: "We reinvest 2% of revenue into open‑access research grants and STEM education initiatives.",
+    index: "04",
+    title: "Partnership over transaction",
+    description:
+      "We plan stock around your production calendar so a lead time never becomes a line stoppage.",
   },
 ];
 
 const milestones = [
-  { year: "2018", event: "Founded by a team of PhD chemists in Cambridge, UK." },
-  { year: "2020", event: "Launched first 5,000‑product catalogue covering all major reagent families." },
-  { year: "2022", event: "Opened North American distribution centre in Boston, MA." },
-  { year: "2024", event: "Achieved ISO 17025 accreditation for in‑house testing." },
-  { year: "2026", event: "Reached 50,000 researchers served across 90 countries." },
+  { year: "2013", event: "Founded in Lagos to supply food-grade raw materials to local manufacturers." },
+  { year: "2016", event: "Warehouse expansion and the first industrial-grade chemical lines." },
+  { year: "2019", event: "Direct sourcing relationships established with mills and refineries abroad." },
+  { year: "2022", event: "Sweetener and vitamin portfolios added for fortification and reformulation work." },
+  { year: "2026", event: "34 active lines serving beverage, bakery, pharmaceutical and process industries." },
 ];
+
+const certifications = ["Certificates of Analysis", "Grade Segregation", "Batch Traceability", "Technical Data Sheets"];
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-white">
-      <section className="relative pt-28 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-green-900/80" />
-        <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-3xl opacity-10 bg-green-400" />
-        <div className="relative max-w-7xl mx-auto px-6 text-center">
-          <p className="text-[10px] font-medium tracking-[0.15em] uppercase text-green-400 mb-3">Our Story</p>
-          <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 drop-shadow-lg">About CJ‑DELUZ</h1>
-          <p className="text-gray-300 text-sm max-w-2xl mx-auto leading-relaxed">
-            We believe that every great discovery starts with the purest materials. For nearly a decade,
-            we've equipped labs around the globe with the reagents and equipment they need – and the trust they deserve.
-          </p>
-        </div>
-      </section>
+    <div className="min-h-screen">
+      {/* ---------- Opening ---------- */}
+      <section className="relative overflow-hidden pb-24 pt-[calc(var(--nav-h)+6rem)] md:pb-32 md:pt-[calc(var(--nav-h)+9rem)]">
+        <Parallax speed={0.12} className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-40 right-0 h-[520px] w-[520px] rounded-full bg-jade-600/12 blur-[140px]" />
+        </Parallax>
 
-      <section className="max-w-5xl mx-auto px-6 -mt-8 relative z-10">
-        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl p-8 md:p-10 border border-gray-100">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">🎯</span>
-            <h2 className="text-2xl font-semibold text-gray-900">Our Mission</h2>
-          </div>
-          <p className="text-gray-700 leading-relaxed text-base">
-            To be the most reliable partner in the global scientific community by delivering
-            <strong className="text-gray-900"> high‑purity chemicals</strong>,
-            <strong className="text-gray-900"> innovative lab solutions</strong>, and
-            <strong className="text-gray-900"> uncompromising customer support</strong>. We exist
-            to remove every barrier between a researcher's idea and their breakthrough.
-          </p>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="text-center mb-10">
-          <p className="text-[10px] font-medium tracking-[0.15em] uppercase text-green-500 mb-2">Why Choose Us</p>
-          <h2 className="text-3xl font-semibold text-gray-900">Our Values</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {values.map((v) => (
-            <div
-              key={v.title}
-              className="group relative bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300"
-            >
-              <div className="text-3xl mb-3 transform group-hover:scale-105 transition-transform duration-300">
-                {v.icon}
-              </div>
-              <h3 className="text-base font-semibold text-gray-800 mb-1">{v.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{v.description}</p>
+        <div className="relative mx-auto max-w-[var(--shell)] px-5 sm:px-8">
+          <Reveal variant="fade">
+            <div className="flex items-center gap-4">
+              <span className="h-px w-12 bg-jade-400/60" />
+              <span className="eyebrow">Our story</span>
             </div>
+          </Reveal>
+
+          <SplitHeading
+            as="h1"
+            text={"A supplier built\nfor consistency."}
+            className="display mt-8 max-w-4xl text-[clamp(2.6rem,8vw,6.2rem)] text-white"
+            stagger={80}
+          />
+
+          <div className="mt-12 grid gap-10 lg:grid-cols-12">
+            <Reveal variant="up" delay={180} className="lg:col-span-7">
+              <p className="max-w-2xl text-base leading-[1.9] text-mist/65">
+                CJ-DELUZ (NIG) LTD supplies chemical raw materials to
+                manufacturers who cannot afford variation. We hold stock
+                locally, buy directly from audited producers, and document every
+                lot — so the material that reaches your process behaves the same
+                way it did last quarter.
+              </p>
+            </Reveal>
+
+            <Reveal variant="up" delay={300} className="lg:col-span-5">
+              <div className="glass rounded-[26px] p-8">
+                <p className="display text-5xl text-shimmer">
+                  <Counter value={PRODUCTS.length} suffix="" />
+                </p>
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.24em] text-mist/45">
+                  Active product lines
+                </p>
+                <div className="my-7 hairline" />
+                <p className="text-sm leading-relaxed text-mist/55">
+                  Food grade · Industrial grade · Sweeteners · Vitamins — all
+                  warehoused and dispatched from Lagos.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Mission ---------- */}
+      <section className="border-y border-white/8 bg-white/[0.015] backdrop-blur-sm">
+        <div className="mx-auto max-w-[var(--shell)] px-5 py-24 sm:px-8 md:py-32">
+          <div className="grid gap-14 lg:grid-cols-12">
+            <div className="lg:col-span-4">
+              <Reveal variant="fade">
+                <span className="eyebrow">Our mission</span>
+              </Reveal>
+              <DrawRule className="mt-7 max-w-[180px]" />
+            </div>
+            <div className="lg:col-span-8">
+              <SplitHeading
+                text={"Remove every barrier\nbetween a formulation\nand the shelf."}
+                className="display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.12] text-white"
+                stagger={55}
+              />
+              <Reveal variant="up" delay={220}>
+                <p className="mt-9 max-w-2xl text-[15px] leading-[1.9] text-mist/60">
+                  That means high-purity chemicals, honest lead times and
+                  technical support from people who know the material — not a
+                  call centre. When your buyer, your QA lead and your production
+                  manager all trust the same delivery, everything downstream
+                  gets easier.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Values ---------- */}
+      <section className="mx-auto max-w-[var(--shell)] px-5 py-24 sm:px-8 md:py-32">
+        <div className="mb-14">
+          <Reveal variant="fade">
+            <span className="eyebrow">What we hold to</span>
+          </Reveal>
+          <SplitHeading
+            text={"Four principles."}
+            className="display mt-5 text-[clamp(2.1rem,5vw,3.8rem)] text-white"
+          />
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2">
+          {values.map((v, i) => (
+            <Reveal key={v.title} variant="up" delay={i * 110}>
+              <div className="lux-card glass h-full rounded-[26px] p-8 md:p-10">
+                <span className="font-mono text-[10px] tracking-[0.3em] text-jade-300/60">
+                  {v.index}
+                </span>
+                <h3 className="display mt-5 text-2xl text-white md:text-[28px]">
+                  {v.title}
+                </h3>
+                <p className="mt-4 text-sm leading-[1.8] text-mist/55">
+                  {v.description}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="bg-gray-50/80 backdrop-blur-lg py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-10">
-            <p className="text-[10px] font-medium tracking-[0.15em] uppercase text-green-500 mb-2">The CJ‑DELUZ Timeline</p>
-            <h2 className="text-3xl font-semibold text-gray-900">Our Journey</h2>
+      {/* ---------- Timeline ---------- */}
+      <section className="relative border-y border-white/8">
+        <div className="mx-auto max-w-[var(--shell)] px-5 py-24 sm:px-8 md:py-32">
+          <div className="mb-16 text-center">
+            <Reveal variant="fade">
+              <span className="eyebrow">The timeline</span>
+            </Reveal>
+            <SplitHeading
+              text={"Our journey."}
+              className="display mt-5 text-[clamp(2.1rem,5vw,3.8rem)] text-white"
+            />
           </div>
-          <div className="space-y-6 max-w-3xl mx-auto">
+
+          <div className="mx-auto max-w-3xl">
             {milestones.map((m, i) => (
-              <div key={m.year} className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-16 text-right">
-                  <span className="text-base font-semibold text-gray-900">{m.year}</span>
-                </div>
-                <div className="flex-1 pb-6 border-l-2 border-green-400 pl-5 relative">
-                  <div className="absolute w-3 h-3 bg-green-400 rounded-full -left-[7px] top-1.5 ring-4 ring-white" />
-                  <p className="text-gray-700 text-sm leading-relaxed">{m.event}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-5xl mx-auto px-6 py-16 text-center">
-        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-100 p-8 md:p-10">
-          <p className="text-[10px] font-medium tracking-[0.15em] uppercase text-green-500 mb-2">Quality Standards</p>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Built on Trust & Precision</h2>
-          <p className="text-gray-600 text-sm max-w-2xl mx-auto mb-6">
-            We hold certifications that demonstrate our commitment to the highest analytical and manufacturing standards.
-            Every lot is validated in‑house using ICP‑MS, GC‑MS, and Karl‑Fischer titration.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {["ISO 17025", "ISO 9001", "GMP Compliant", "REACH Registered"].map((cert) => (
-              <span
-                key={cert}
-                className="px-5 py-2 bg-gray-50 rounded-full text-xs font-medium text-gray-700 border border-gray-200 shadow-sm"
+              <Reveal
+                key={m.year}
+                variant="left"
+                delay={i * 90}
+                className="group relative flex gap-6 pb-12 last:pb-0 sm:gap-10"
               >
-                {cert}
-              </span>
+                <div className="w-16 flex-shrink-0 pt-0.5 text-right sm:w-24">
+                  <span className="font-mono text-sm tracking-[0.12em] text-jade-300">
+                    {m.year}
+                  </span>
+                </div>
+
+                <div className="relative flex-1 border-l border-white/10 pb-2 pl-7 sm:pl-9">
+                  <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-jade-400 shadow-[0_0_16px_rgba(52,217,127,0.9)] transition-transform duration-500 group-hover:scale-150" />
+                  <p className="text-[15px] leading-[1.8] text-mist/65">
+                    {m.event}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-gray-900 py-14 px-6 text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-3">Ready to experience the CJ‑DELUZ difference?</h2>
-          <p className="text-gray-400 text-sm mb-6">Browse our catalogue of over 10,000 high‑purity reagents and lab essentials.</p>
-          <Link
-            to="/products"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white font-medium rounded-full hover:bg-green-500 transition-all shadow-lg shadow-green-600/20"
-          >
-            Explore Products →
-          </Link>
+      {/* ---------- Assurance ---------- */}
+      <section className="mx-auto max-w-[var(--shell)] px-5 py-24 sm:px-8 md:py-32">
+        <div className="glass relative overflow-hidden rounded-[32px] px-8 py-14 text-center md:px-16 md:py-20">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-jade-500/10 blur-3xl" />
+
+          <Reveal variant="fade">
+            <span className="eyebrow">Assurance</span>
+          </Reveal>
+          <SplitHeading
+            text={"Built on paperwork\nyou can audit."}
+            className="display relative mt-6 text-[clamp(1.9rem,4.4vw,3.2rem)] text-white"
+          />
+          <Reveal variant="up" delay={200}>
+            <p className="relative mx-auto mt-7 max-w-2xl text-sm leading-[1.85] text-mist/60">
+              Documentation is issued with each consignment so your quality team
+              can verify what arrived without chasing us for it.
+            </p>
+          </Reveal>
+
+          <Reveal variant="up" delay={300}>
+            <div className="relative mt-10 flex flex-wrap justify-center gap-3">
+              {certifications.map((c) => (
+                <span
+                  key={c}
+                  className="rounded-full border border-white/12 bg-white/[0.04] px-6 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-mist/65"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ---------- CTA ---------- */}
+      <section className="relative overflow-hidden border-t border-white/8 py-28 md:py-36">
+        <div className="mx-auto max-w-2xl px-5 text-center sm:px-8">
+          <SplitHeading
+            text={"Ready when you are."}
+            className="display text-[clamp(2.2rem,6vw,4.4rem)] text-white"
+          />
+          <Reveal variant="up" delay={200}>
+            <p className="mx-auto mt-7 max-w-md text-[15px] leading-relaxed text-mist/60">
+              Browse the catalogue, or send us a specification and let us come
+              back with options.
+            </p>
+          </Reveal>
+          <Reveal variant="up" delay={300}>
+            <div className="mt-11 flex flex-wrap items-center justify-center gap-4">
+              <Link
+                to="/products"
+                className="btn-primary group inline-flex items-center gap-2.5 rounded-full px-9 py-4 text-[12px] uppercase tracking-[0.18em]"
+              >
+                Explore Products
+                <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
+              </Link>
+              <Link
+                to="/contact"
+                className="btn-ghost inline-flex items-center gap-2.5 rounded-full px-9 py-4 text-[12px] uppercase tracking-[0.18em]"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
     </div>

@@ -231,27 +231,68 @@ export const CATEGORIES = [
 
 export const HERO_SLIDES = [
   {
-    headline: "Precision Chemicals,\nFor Your Lab",
-    sub: "High-purity reagents and solvents for accurate research",
-    cta: "Shop Reagents",
-    bg: "from-stone-900 via-stone-800 to-amber-950",
-    accent: "#e9c46a",
-    img: "https://images.unsplash.com/photo-1581093458791-9d4248b5a7a6?auto=format&fit=crop&w=1200&h=800&q=80",
+    label: "Chapter 01 — Purity",
+    headline: "Chemistry,\nrefined.",
+    sub: "Food-grade, industrial and pharmaceutical raw materials, sourced to specification and delivered with full traceability.",
+    cta: "View Catalogue",
+    img: "https://images.unsplash.com/photo-1581093458791-9d4248b5a7a6?auto=format&fit=crop&w=1600&h=1000&q=80",
   },
   {
-    headline: "Sale Up\nTo 40% Off",
-    sub: "Limited time on selected laboratory supplies",
-    cta: "Shop Sale",
-    bg: "from-slate-900 via-blue-950 to-slate-800",
-    accent: "#90e0ef",
-    img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&w=1200&h=800&q=80",
+    label: "Chapter 02 — Provenance",
+    headline: "Sourced\nwith intent.",
+    sub: "Audited mills and refineries across four continents. Every lot arrives with certificates of analysis you can act on.",
+    cta: "Our Standards",
+    img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&w=1600&h=1000&q=80",
   },
   {
-    headline: "New Arrivals\nThis Week",
-    sub: "Latest glassware, equipment, and safety gear",
-    cta: "Explore New In",
-    bg: "from-rose-950 via-stone-900 to-stone-800",
-    accent: "#ffb4a2",
-    img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&h=800&q=80",
+    label: "Chapter 03 — Scale",
+    headline: "Delivered\nat scale.",
+    sub: "From 25kg trial quantities to full container loads — warehoused in Nigeria, moving on your production schedule.",
+    cta: "Talk to Us",
+    img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1600&h=1000&q=80",
   },
+];
+
+// Category storytelling used by the homepage chapter cards.
+export const CATEGORY_META = [
+  {
+    name: "Food Grade Raw Materials",
+    index: "01",
+    blurb:
+      "Starches, glucose syrups, acidulants and emulsifiers for beverage, bakery and confectionery lines.",
+  },
+  {
+    name: "Industrial Grade",
+    index: "02",
+    blurb:
+      "Caustics, acids and solvents specified for treatment, manufacturing and process chemistry.",
+  },
+  {
+    name: "Sweeteners",
+    index: "03",
+    blurb:
+      "High-intensity sweetener systems formulated for consistent sweetness at reduced cost in use.",
+  },
+  {
+    name: "Vitamins",
+    index: "04",
+    blurb:
+      "Fortification-ready vitamin premixes and actives with stability data for your matrix.",
+  },
+];
+
+export const STATS = [
+  { value: 34, suffix: "+", label: "Active product lines" },
+  { value: 12, suffix: "yrs", label: "Supplying industry" },
+  { value: 99.8, suffix: "%", label: "Spec conformance", decimals: 1 },
+  { value: 48, suffix: "h", label: "Typical dispatch" },
+];
+
+export const MARQUEE_TERMS = [
+  "Certificates of Analysis",
+  "ISO-Aligned Sourcing",
+  "Bulk & Trial Quantities",
+  "Traceable Lots",
+  "Technical Support",
+  "Nationwide Logistics",
 ];

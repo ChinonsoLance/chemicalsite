@@ -1,0 +1,163 @@
+// Motion.jsx — presentational scroll-story primitives.
+// All scroll plumbing lives in ../hooks/useScroll.
+
+import { useEffect, useRef, useState } from "react";
+import {
+  prefersReducedMotion,
+  useRevealRef,
+  useScrollTick,
+} from "../hooks/useScroll";
+
+/**
+ * Fades/slides its children in the first time they enter the viewport.
+ * variant: up | down | left | right | scale | fade | curtain
+ */
+export function Reveal({
+  as: Tag = "div",
+  variant = "up",
+  delay = 0,
+  duration,
+  once = true,
+  className = "",
+  style,
+  children,
+  ...rest
+}) {
+  const ref = useRevealRef(once);
+
+  return (
+    <Tag
+      ref={ref}
+      className={`reveal reveal--${variant} ${className}`}
+      style={{
+        transitionDelay: delay ? `${delay}ms` : undefined,
+        transitionDuration: duration ? `${duration}ms` : undefined,
+        ...style,
+      }}
+      {...rest}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+/** A hairline rule that draws itself across when scrolled into view. */
+export function DrawRule({ className = "", delay = 0 }) {
+  const ref = useRevealRef(true);
+
+  return (
+    <div
+      ref={ref}
+      className={`rule-draw hairline ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    />
+  );
+}
+
+/** Headline whose words lift out of a mask, one after another. */
+export function SplitHeading({
+  text,
+  as: Tag = "h2",
+  className = "",
+  stagger = 65,
+  delay = 0,
+}) {
+  const ref = useRevealRef(true);
+  const lines = String(text).split("\n");
+
+  return (
+    <Tag ref={ref} className={className}>
+      {lines.map((line, li) => {
+        const words = line.split(" ");
+        return (
+          <span key={li} className="block">
+            {words.map((word, wi) => (
+              <span key={wi} className="word-wrap">
+                <span
+                  className="word"
+                  style={{
+                    transitionDelay: `${delay + (li * 4 + wi) * stagger}ms`,
+                  }}
+                >
+                  {word}
+                </span>
+                {wi < words.length - 1 && <span>&nbsp;</span>}
+              </span>
+            ))}
+          </span>
+        );
+      })}
+    </Tag>
+  );
+}
+
+/**
+ * Drifts its children against the scroll direction.
+ * speed: positive drifts down, negative drifts up. ~0.06–0.3 reads well.
+ */
+export function Parallax({ speed = 0.14, className = "", children, ...rest }) {
+  const ref = useRef(null);
+  const reduced = useRef(false);
+
+  useEffect(() => {
+    reduced.current = prefersReducedMotion();
+  }, []);
+
+  useScrollTick(() => {
+    const el = ref.current;
+    if (!el || reduced.current) return;
+    const rect = el.getBoundingClientRect();
+    const viewport = window.innerHeight;
+    if (rect.bottom < -viewport || rect.top > viewport * 2) return;
+    const centerOffset = rect.top + rect.height / 2 - viewport / 2;
+    el.style.transform = `translate3d(0, ${(centerOffset * speed).toFixed(2)}px, 0)`;
+  });
+
+  return (
+    <div ref={ref} className={className} style={{ willChange: "transform" }} {...rest}>
+      {children}
+    </div>
+  );
+}
+
+/** Counts up to `value` the first time it scrolls into view. */
+export function Counter({ value, duration = 1800, decimals = 0, suffix = "", prefix = "" }) {
+  const ref = useRef(null);
+  const [display, setDisplay] = useState(() => (prefersReducedMotion() ? value : 0));
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+
+    let frame = 0;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        const started = performance.now();
+        const step = (now) => {
+          const t = Math.min(1, (now - started) / duration);
+          const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t); // easeOutExpo
+          setDisplay(value * eased);
+          if (t < 1) frame = requestAnimationFrame(step);
+        };
+        frame = requestAnimationFrame(step);
+      },
+      { threshold: 0.4 }
+    );
+
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [value, duration]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {display.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
