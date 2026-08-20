@@ -105,61 +105,57 @@ button {
     linear-gradient(180deg, #04170e 0%, #02100a 42%, #041a10 70%, #02100a 100%);
 }
 
-/* Slow-drifting aurora orbs, nudged by scroll depth */
+/* Slow-drifting aurora orbs, nudged by scroll depth.
+   No `filter: blur()` here on purpose: a radial-gradient that fades to
+   transparent already *is* a blur, and a real 110px blur on a 60vw box has to
+   be re-rasterised whenever the layer changes -- which, with an infinite
+   animation on it, meant every frame. The stops below are widened to match
+   what the blurred version looked like. */
 .backdrop-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(110px);
   opacity: 0.42;
   will-change: transform;
 }
 .backdrop-orb--a {
-  width: 62vw;
-  height: 62vw;
-  top: -18vw;
-  left: -12vw;
-  background: radial-gradient(circle, #0d9e4e 0%, transparent 68%);
+  width: 78vw;
+  height: 78vw;
+  top: -26vw;
+  left: -20vw;
+  background: radial-gradient(circle, #0d9e4e 0%, rgba(13, 158, 78, 0.55) 26%, rgba(13, 158, 78, 0.16) 52%, transparent 76%);
   transform: translate3d(0, calc(var(--page-depth) * -160px), 0);
   animation: orb-drift-a 26s ease-in-out infinite alternate;
 }
 .backdrop-orb--b {
-  width: 54vw;
-  height: 54vw;
-  top: 34vh;
-  right: -18vw;
-  background: radial-gradient(circle, #0f7d63 0%, transparent 70%);
+  width: 68vw;
+  height: 68vw;
+  top: 30vh;
+  right: -26vw;
+  background: radial-gradient(circle, #0f7d63 0%, rgba(15, 125, 99, 0.5) 28%, rgba(15, 125, 99, 0.14) 54%, transparent 78%);
   opacity: 0.34;
   transform: translate3d(0, calc(var(--page-depth) * 200px), 0);
   animation: orb-drift-b 32s ease-in-out infinite alternate;
 }
 .backdrop-orb--c {
-  width: 46vw;
-  height: 46vw;
-  bottom: -16vw;
-  left: 22vw;
-  background: radial-gradient(circle, #14532d 0%, transparent 72%);
+  width: 58vw;
+  height: 58vw;
+  bottom: -22vw;
+  left: 16vw;
+  background: radial-gradient(circle, #14532d 0%, rgba(20, 83, 45, 0.55) 30%, rgba(20, 83, 45, 0.15) 56%, transparent 80%);
   opacity: 0.5;
   transform: translate3d(0, calc(var(--page-depth) * -110px), 0);
   animation: orb-drift-c 38s ease-in-out infinite alternate;
 }
 
+/* Translate only -- animating `scale` here would re-raster the layer. */
 @keyframes orb-drift-a {
-  to {
-    translate: 12vw 6vh;
-    scale: 1.15;
-  }
+  to { translate: 12vw 6vh; }
 }
 @keyframes orb-drift-b {
-  to {
-    translate: -14vw -8vh;
-    scale: 1.2;
-  }
+  to { translate: -14vw -8vh; }
 }
 @keyframes orb-drift-c {
-  to {
-    translate: 10vw -5vh;
-    scale: 0.9;
-  }
+  to { translate: 10vw -5vh; }
 }
 
 /* Engineering grid — parallaxes with the page */
@@ -196,8 +192,9 @@ button {
 }
 .backdrop-grain {
   position: absolute;
-  inset: -200%;
+  inset: -6%;
   opacity: 0.16;
+  will-change: transform;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   animation: grain-shift 700ms steps(4) infinite;
 }
@@ -212,15 +209,23 @@ button {
 /* ============================================================
    Scroll-trigger primitives
    ============================================================ */
+.parallax-layer {
+  will-change: transform;
+}
+
 .reveal {
   opacity: 0;
-  filter: blur(12px);
-  will-change: opacity, transform, filter;
   transition:
     opacity 0.95s var(--ease-out-expo),
     transform 1.15s var(--ease-out-expo),
-    filter 0.95s var(--ease-out-expo),
     clip-path 1.15s var(--ease-out-expo);
+}
+/* A GPU layer is handed out only to reveals that are about to fire (armed by
+   the proximity observer in useScroll.js) and taken back once they land. A
+   permanent `will-change` on all ~50 reveals on a page exhausts layer memory
+   on mobile GPUs and drops the compositor into software rendering. */
+.reveal.is-armed:not(.is-in) {
+  will-change: opacity, transform;
 }
 .reveal--up { transform: translate3d(0, 46px, 0); }
 .reveal--down { transform: translate3d(0, -34px, 0); }
@@ -231,13 +236,12 @@ button {
 .reveal--curtain {
   transform: translate3d(0, 26px, 0);
   clip-path: inset(0 0 100% 0);
-  filter: blur(0);
 }
 .reveal.is-in {
   opacity: 1;
   transform: none;
-  filter: blur(0);
   clip-path: inset(0 0 0 0);
+  will-change: auto;
 }
 
 /* Line that draws itself in */
@@ -266,22 +270,28 @@ button {
 /* ============================================================
    Surfaces
    ============================================================ */
+/* `.glass` is the cheap one: a static tint, no backdrop-filter. Use it for
+   in-flow surfaces (cards, panels) -- there can be dozens on screen at once,
+   and each backdrop-filter layer costs a full sample-and-blur of everything
+   behind it on every frame it moves. */
 .glass {
   background: linear-gradient(
     150deg,
     rgba(255, 255, 255, 0.062) 0%,
-    rgba(255, 255, 255, 0.022) 45%,
-    rgba(6, 35, 21, 0.28) 100%
+    rgba(255, 255, 255, 0.028) 45%,
+    rgba(6, 35, 21, 0.55) 100%
   );
   border: 1px solid rgba(124, 240, 174, 0.13);
+}
+/* `.glass-blur` is the expensive one. Reserve it for the handful of surfaces
+   that genuinely float over moving content -- nav, drawers, modals. */
+.glass-blur {
   backdrop-filter: blur(18px) saturate(130%);
   -webkit-backdrop-filter: blur(18px) saturate(130%);
 }
 .glass-strong {
-  background: linear-gradient(150deg, rgba(9, 40, 24, 0.92) 0%, rgba(3, 18, 11, 0.94) 100%);
+  background: linear-gradient(150deg, rgba(9, 40, 24, 0.97) 0%, rgba(3, 18, 11, 0.98) 100%);
   border: 1px solid rgba(124, 240, 174, 0.16);
-  backdrop-filter: blur(26px) saturate(140%);
-  -webkit-backdrop-filter: blur(26px) saturate(140%);
 }
 
 .hairline {
@@ -398,13 +408,25 @@ button {
   color: var(--color-mist);
   border: 1px solid rgba(124, 240, 174, 0.28);
   background: rgba(255, 255, 255, 0.035);
-  backdrop-filter: blur(10px);
   transition: border-color 0.45s ease, background 0.45s ease, transform 0.45s var(--ease-out-expo);
 }
 .btn-ghost:hover {
   border-color: rgba(52, 217, 127, 0.72);
   background: rgba(52, 217, 127, 0.1);
   transform: translateY(-2px);
+}
+
+/* The one floating-glass surface the site keeps: the nav genuinely sits over
+   moving content, so the blur is doing visible work. Everything else that used
+   to carry a backdrop-filter now uses an opaque tint instead. */
+.nav-glass {
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+.perf-lite .nav-glass {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background-color: rgba(2, 16, 10, 0.95);
 }
 
 /* Animated underline for nav items */
@@ -524,4 +546,31 @@ textarea:-webkit-autofill {
   * {
     scroll-behavior: auto !important;
   }
+}
+
+/* ============================================================
+   Low-power tier -- `.perf-lite` is set on <html> at boot by main.jsx for
+   small screens, low core counts, or devices asking to save data.
+   The scene keeps its composition; it just stops repainting.
+   ============================================================ */
+.perf-lite .backdrop-grain,
+.perf-lite .backdrop-beams {
+  display: none;
+}
+.perf-lite .backdrop-orb {
+  animation: none !important;
+}
+.perf-lite .glass-blur {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background-color: rgba(3, 18, 11, 0.92);
+}
+.perf-lite .text-shimmer {
+  animation: none;
+}
+.perf-lite .lux-card::after {
+  display: none;
+}
+.perf-lite .lux-card:hover {
+  transform: none;
 }

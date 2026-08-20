@@ -52,7 +52,7 @@ export default function Products({ wishlist = [], toggleWishlist }) {
       </section>
 
       {/* Controls */}
-      <section className="sticky top-[var(--nav-h)] z-30 border-y border-white/8 bg-abyss/70 backdrop-blur-2xl">
+      <section className="sticky top-[var(--nav-h)] z-30 border-y border-white/8 bg-abyss/94">
         <div className="mx-auto max-w-[var(--shell)] px-5 py-4 sm:px-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
             <div className="flex flex-1 items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-5 py-2.5 transition-colors focus-within:border-jade-400/50 lg:max-w-sm">

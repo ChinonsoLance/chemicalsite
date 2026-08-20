@@ -7,7 +7,7 @@ export default function ProductCard({ product, onWishlistToggle, isWishlisted })
     <article className="lux-card glass group h-full rounded-[22px]">
       {product.badge && (
         <span
-          className={`absolute left-4 top-4 z-10 rounded-full px-3 py-1 font-mono text-[9px] uppercase tracking-[0.2em] backdrop-blur-md ${
+          className={`absolute left-4 top-4 z-10 rounded-full px-3 py-1 font-mono text-[9px] uppercase tracking-[0.2em] ${
             product.badge === "Sale"
               ? "bg-rose-500/85 text-white"
               : "bg-jade-500/90 text-abyss"
@@ -21,7 +21,7 @@ export default function ProductCard({ product, onWishlistToggle, isWishlisted })
         <button
           onClick={() => onWishlistToggle(product.id)}
           aria-label="Save product"
-          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-abyss/50 opacity-0 backdrop-blur-md transition-all duration-500 hover:scale-110 hover:border-jade-400/50 group-hover:opacity-100"
+          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-abyss/80 opacity-0 transition-all duration-500 hover:scale-110 hover:border-jade-400/50 group-hover:opacity-100"
         >
           <svg
             className={`h-4 w-4 ${isWishlisted ? "fill-jade-400 text-jade-400" : "text-mist/70"}`}

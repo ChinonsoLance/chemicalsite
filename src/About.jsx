@@ -96,7 +96,7 @@ export default function About() {
       </section>
 
       {/* ---------- Mission ---------- */}
-      <section className="border-y border-white/8 bg-white/[0.015] backdrop-blur-sm">
+      <section className="border-y border-white/8 bg-white/[0.015]">
         <div className="mx-auto max-w-[var(--shell)] px-5 py-24 sm:px-8 md:py-32">
           <div className="grid gap-14 lg:grid-cols-12">
             <div className="lg:col-span-4">

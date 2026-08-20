@@ -49,7 +49,7 @@ function LoadingScreen() {
           <div className="loader-sweep h-full w-1/3 bg-gradient-to-r from-transparent via-jade-400 to-transparent" />
         </div>
 
-        <p className="eyebrow">Calibrating</p>
+        <p className="eyebrow">Loading</p>
       </div>
     </div>
   );
@@ -59,14 +59,18 @@ function LoadingScreen() {
 function ScrollProgress() {
   const barRef = useRef(null);
 
+  const last = useRef(-1);
+
   // Written straight to the DOM — a progress rail should not re-render React
-  // on every animation frame.
-  useScrollTick(() => {
+  // on every animation frame. Page height comes from the shared metrics rather
+  // than a per-frame `scrollHeight` read, which would force a full layout.
+  useScrollTick((m) => {
     const bar = barRef.current;
     if (!bar) return;
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - window.innerHeight;
-    bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+    const p = Math.round(m.depth * 1000) / 1000;
+    if (p === last.current) return;
+    last.current = p;
+    bar.style.transform = `scaleX(${p})`;
   });
 
   return (
@@ -92,7 +96,7 @@ function CartDrawer({ cart, onClose, onRemove, onUpdateQty }) {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   return (
     <div className="fixed inset-0 z-[60] flex">
-      <div className="flex-1 bg-abyss/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="flex-1 bg-abyss/80" onClick={onClose} />
       <div className="glass-strong flex w-full max-w-md flex-col shadow-2xl">
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-5 sm:px-7">
           <h2 className="display text-2xl text-white">
@@ -182,7 +186,15 @@ function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  useScrollTick(() => setScrolled(window.scrollY > 24));
+  // Guarded so the nav only re-renders on the actual crossing, not on every
+  // frame of every scroll.
+  const scrolledRef = useRef(false);
+  useScrollTick((m) => {
+    const next = m.scrollY > 24;
+    if (next === scrolledRef.current) return;
+    scrolledRef.current = next;
+    setScrolled(next);
+  });
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
@@ -200,7 +212,7 @@ function Navbar() {
       <header
         className={`fixed inset-x-0 top-0 z-40 transition-all duration-700 ${
           scrolled
-            ? "border-b border-white/10 bg-abyss/72 backdrop-blur-2xl backdrop-saturate-150"
+            ? "nav-glass border-b border-white/10 bg-abyss/72"
             : "border-b border-transparent bg-transparent"
         }`}
       >
@@ -250,7 +262,7 @@ function Navbar() {
 
             <button
               onClick={() => setMobileMenuOpen((v) => !v)}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white backdrop-blur-md transition-colors hover:border-jade-400/50 md:hidden"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white transition-colors hover:border-jade-400/50 md:hidden"
               aria-label="Toggle menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -278,7 +290,7 @@ function Navbar() {
         }`}
       >
         <div
-          className={`absolute inset-0 bg-abyss/92 backdrop-blur-2xl transition-opacity duration-500 ${
+          className={`absolute inset-0 bg-abyss/97 transition-opacity duration-500 ${
             mobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={() => setMobileMenuOpen(false)}

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   prefersReducedMotion,
   useRevealRef,
-  useScrollTick,
+  useScrollMeasure,
 } from "../hooks/useScroll";
 
 /**
@@ -98,23 +98,35 @@ export function SplitHeading({
 export function Parallax({ speed = 0.14, className = "", children, ...rest }) {
   const ref = useRef(null);
   const reduced = useRef(false);
+  const last = useRef(null);
 
   useEffect(() => {
     reduced.current = prefersReducedMotion();
   }, []);
 
-  useScrollTick(() => {
-    const el = ref.current;
-    if (!el || reduced.current) return;
-    const rect = el.getBoundingClientRect();
-    const viewport = window.innerHeight;
-    if (rect.bottom < -viewport || rect.top > viewport * 2) return;
-    const centerOffset = rect.top + rect.height / 2 - viewport / 2;
-    el.style.transform = `translate3d(0, ${(centerOffset * speed).toFixed(2)}px, 0)`;
-  });
+  // Split-phase: measure in the read pass, write the transform in the write
+  // pass. Measuring and mutating in the same pass forces the browser to redo
+  // layout for the next Parallax on the page, every frame.
+  useScrollMeasure(
+    (m) => {
+      const el = ref.current;
+      if (!el || reduced.current) return null;
+      const rect = el.getBoundingClientRect();
+      // Off-screen by more than a viewport: nothing to move.
+      if (rect.bottom < -m.viewportH || rect.top > m.viewportH * 2) return null;
+      const centerOffset = rect.top + rect.height / 2 - m.viewportH / 2;
+      return Math.round(centerOffset * speed * 100) / 100;
+    },
+    (offset) => {
+      const el = ref.current;
+      if (!el || offset === null || offset === last.current) return;
+      last.current = offset;
+      el.style.transform = `translate3d(0, ${offset}px, 0)`;
+    }
+  );
 
   return (
-    <div ref={ref} className={className} style={{ willChange: "transform" }} {...rest}>
+    <div ref={ref} className={`parallax-layer ${className}`} {...rest}>
       {children}
     </div>
   );

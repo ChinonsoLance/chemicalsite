@@ -26,7 +26,7 @@ const columns = [
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-white/8 bg-abyss/40 backdrop-blur-sm">
+    <footer className="relative z-10 border-t border-white/8 bg-abyss/40">
       <div className="mx-auto max-w-[var(--shell)] px-5 pb-10 pt-20 sm:px-8 md:pt-28">
         {/* Wordmark */}
         <Reveal variant="up">

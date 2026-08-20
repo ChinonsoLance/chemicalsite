@@ -16,7 +16,7 @@ import {
   Parallax,
   Counter,
 } from "./components/Motion";
-import { useScrollTick } from "./hooks/useScroll";
+import { useScrollMeasure } from "./hooks/useScroll";
 
 /* ============================================================
    Chapter 00 — the cinematic hero
@@ -40,34 +40,48 @@ function Hero() {
     return () => clearInterval(t);
   }, []);
 
-  useScrollTick(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const rect = track.getBoundingClientRect();
-    const distance = Math.max(rect.height - window.innerHeight, 1);
-    const p = Math.min(1, Math.max(0, -rect.top / distance));
+  const lastP = useRef(-1);
 
-    // Copy lifts away and dissolves through the first two thirds.
-    if (copyRef.current) {
-      copyRef.current.style.transform = `translate3d(0, ${-p * 120}px, 0)`;
-      copyRef.current.style.opacity = String(Math.max(0, 1 - p * 1.7));
-      copyRef.current.style.filter = `blur(${p * 8}px)`;
+  // One measurement in the read pass, all five writes in the write pass.
+  useScrollMeasure(
+    (m) => {
+      const track = trackRef.current;
+      if (!track) return null;
+      const rect = track.getBoundingClientRect();
+      const distance = Math.max(rect.height - m.viewportH, 1);
+      // Once the hero has scrolled past, stop writing entirely.
+      if (rect.bottom < 0) return null;
+      return Math.min(1, Math.max(0, -rect.top / distance));
+    },
+    (raw) => {
+      if (raw === null) return;
+      const p = Math.round(raw * 1000) / 1000;
+      if (p === lastP.current) return;
+      lastP.current = p;
+
+      // Copy lifts away and dissolves through the first two thirds.
+      // Opacity + transform only: a per-frame `filter: blur()` here meant the
+      // whole headline block was re-rasterised on every frame of the scroll.
+      if (copyRef.current) {
+        copyRef.current.style.transform = `translate3d(0, ${-p * 120}px, 0)`;
+        copyRef.current.style.opacity = String(Math.max(0, 1 - p * 1.7));
+      }
+      // Plate pushes in slowly — the "dolly" move.
+      if (imageRef.current) {
+        imageRef.current.style.transform = `scale(${1.06 + p * 0.18}) translate3d(0, ${p * 60}px, 0)`;
+      }
+      // Darkness closes over the frame so it hands off to the page background.
+      if (veilRef.current) {
+        veilRef.current.style.opacity = String(0.35 + p * 0.62);
+      }
+      if (cueRef.current) {
+        cueRef.current.style.opacity = String(Math.max(0, 1 - p * 3));
+      }
+      if (stageRef.current) {
+        stageRef.current.style.setProperty("--hero-p", p);
+      }
     }
-    // Plate pushes in slowly — the "dolly" move.
-    if (imageRef.current) {
-      imageRef.current.style.transform = `scale(${1.06 + p * 0.18}) translate3d(0, ${p * 60}px, 0)`;
-    }
-    // Darkness closes over the frame so it hands off to the page background.
-    if (veilRef.current) {
-      veilRef.current.style.opacity = String(0.35 + p * 0.62);
-    }
-    if (cueRef.current) {
-      cueRef.current.style.opacity = String(Math.max(0, 1 - p * 3));
-    }
-    if (stageRef.current) {
-      stageRef.current.style.setProperty("--hero-p", p.toFixed(3));
-    }
-  });
+  );
 
   const slide = HERO_SLIDES[active];
 
@@ -197,7 +211,7 @@ function Hero() {
 function Ticker() {
   const row = [...MARQUEE_TERMS, ...MARQUEE_TERMS];
   return (
-    <div className="relative overflow-hidden border-y border-white/8 bg-white/[0.02] py-5 backdrop-blur-sm">
+    <div className="relative overflow-hidden border-y border-white/8 bg-white/[0.02] py-5">
       <div className="marquee">
         {row.map((term, i) => (
           <span
@@ -314,7 +328,7 @@ function Manifesto() {
    ============================================================ */
 function Stats() {
   return (
-    <section className="relative border-y border-white/8 bg-white/[0.015] backdrop-blur-sm">
+    <section className="relative border-y border-white/8 bg-white/[0.015]">
       <div className="mx-auto grid max-w-[var(--shell)] grid-cols-2 gap-px px-5 sm:px-8 lg:grid-cols-4">
         {STATS.map((s, i) => (
           <Reveal
