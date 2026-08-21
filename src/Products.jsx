@@ -1,139 +1,130 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
-import { PRODUCTS, CATEGORIES } from "./data";
-import ProductCard from "./components/ProductCard";
-import { Reveal, DrawRule, SplitHeading, Parallax } from "./components/Motion";
 
-export default function Products({ wishlist = [], toggleWishlist }) {
-  const [searchQuery, setSearchQuery] = useState("");
+import { PRODUCTS, CATEGORIES, CATEGORY_META } from "./data";
+import { CONTACT } from "./site";
+import ProductCard from "./components/ProductCard";
+import { Reveal } from "./components/Motion";
+import { Masthead, CallToAction } from "./components/Layout";
+
+const shortLabel = (name) =>
+  name === "General"
+    ? "All"
+    : CATEGORY_META.find((c) => c.name === name)?.short || name;
+
+export default function Products() {
+  const [query, setQuery] = useState("");
   const [category, setCategory] = useState("General");
 
   const filtered = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
+    const q = query.trim().toLowerCase();
     return PRODUCTS.filter((p) => {
       const matchCat = category === "General" || p.category === category;
-      const matchSearch =
+      const matchText =
         !q ||
         p.name.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q);
-      return matchCat && matchSearch;
+      return matchCat && matchText;
     });
-  }, [searchQuery, category]);
+  }, [query, category]);
 
   return (
-    <div className="min-h-screen">
-      {/* Chapter header */}
-      <section className="relative overflow-hidden pb-16 pt-[calc(var(--nav-h)+5rem)] md:pb-20 md:pt-[calc(var(--nav-h)+8rem)]">
-        <Parallax speed={0.1} className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-jade-600/10 blur-[130px]" />
-        </Parallax>
+    <>
+      <Masthead
+        index="01"
+        label="The catalogue"
+        title={
+          <>
+            Every material
+            <br />
+            we carry.
+          </>
+        }
+        lede={`${PRODUCTS.length} lines across food-grade, industrial, sweetener and vitamin disciplines — held in stock and documented lot by lot.`}
+      />
 
-        <div className="relative mx-auto max-w-[var(--shell)] px-5 sm:px-8">
-          <Reveal variant="fade">
-            <span className="eyebrow">The catalogue</span>
-          </Reveal>
+      {/* Filter bar. Opaque rather than translucent: it sits over a scrolling
+          grid, and a blurred backdrop there costs a full sample-and-blur of
+          everything behind it on every frame. */}
+      <div className="sticky top-[var(--nav-h)] z-30 border-y border-rule bg-paper">
+        <div className="wrap flex flex-col gap-3 py-3 lg:flex-row lg:items-center lg:gap-6">
+          <div className="flex items-center gap-3 rounded-[var(--r-pill)] border border-rule px-4 py-1.5 lg:w-72">
+            <Search className="h-4 w-4 shrink-0 text-ink-3" />
+            <input
+              className="w-full bg-transparent py-1 text-sm outline-none placeholder:text-ink-3"
+              placeholder="Search materials…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              aria-label="Search materials"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="text-ink-3 transition-colors hover:text-ink"
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
 
-          <SplitHeading
-            text={"Every material\nwe carry."}
-            as="h1"
-            className="display mt-6 text-[clamp(2.6rem,8vw,6rem)] text-white"
-            stagger={80}
-          />
-
-          <Reveal variant="up" delay={200}>
-            <p className="mt-8 max-w-xl text-[15px] leading-relaxed text-mist/60">
-              {PRODUCTS.length} lines across food-grade, industrial, sweetener
-              and vitamin disciplines — held in stock and documented lot by lot.
-            </p>
-          </Reveal>
-
-          <DrawRule className="mt-14" delay={260} />
-        </div>
-      </section>
-
-      {/* Controls */}
-      <section className="sticky top-[var(--nav-h)] z-30 border-y border-white/8 bg-abyss/94">
-        <div className="mx-auto max-w-[var(--shell)] px-5 py-4 sm:px-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-            <div className="flex flex-1 items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-5 py-2.5 transition-colors focus-within:border-jade-400/50 lg:max-w-sm">
-              <Search className="h-4 w-4 flex-shrink-0 text-jade-300/70" />
-              <input
-                className="w-full bg-transparent text-sm text-white placeholder-mist/35 outline-none"
-                placeholder="Search materials…"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="text-mist/40 transition-colors hover:text-white"
-                  aria-label="Clear search"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-
-            <div className="scrollbar-none flex items-center gap-2 overflow-x-auto">
-              {CATEGORIES.map((cat) => (
+          <div className="scrollbar-none -mx-1 flex items-center gap-1 overflow-x-auto px-1">
+            {CATEGORIES.map((cat) => {
+              const active = category === cat;
+              return (
                 <button
                   key={cat}
                   onClick={() => setCategory(cat)}
-                  className={`flex-shrink-0 rounded-full px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] transition-all duration-500 ${
-                    category === cat
-                      ? "bg-jade-500 text-abyss shadow-[0_10px_30px_-12px_rgba(22,184,98,0.9)]"
-                      : "border border-white/10 text-mist/60 hover:border-jade-400/40 hover:text-white"
-                  }`}
+                  aria-pressed={active}
+                  className="label chip"
                 >
-                  {cat === "General" ? "All" : cat}
+                  {shortLabel(cat)}
                 </button>
-              ))}
-            </div>
-
-            <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-mist/35 lg:ml-auto lg:block">
-              {String(filtered.length).padStart(2, "0")} results
-            </span>
+              );
+            })}
           </div>
-        </div>
-      </section>
 
-      {/* Grid */}
-      <section className="mx-auto max-w-[var(--shell)] px-5 py-16 sm:px-8 md:py-24">
+          <span className="label num hidden lg:ml-auto lg:block">
+            {String(filtered.length).padStart(2, "0")} / {PRODUCTS.length}
+          </span>
+        </div>
+      </div>
+
+      <section className="wrap relative z-10 py-14 md:py-20">
         {filtered.length === 0 ? (
-          <div className="py-28 text-center">
-            <p className="display text-4xl text-white/80">Nothing here yet</p>
-            <p className="mt-4 text-sm text-mist/50">
-              No material matches “{searchQuery}”.
+          <div className="panel px-6 py-20 text-center">
+            <p className="display-sm text-xl">No match</p>
+            <p className="prose-body mx-auto mt-3 max-w-sm text-[14px]">
+              Nothing in the catalogue matches “{query}”. We source beyond this
+              list — tell us what you need.
             </p>
             <button
               onClick={() => {
-                setSearchQuery("");
+                setQuery("");
                 setCategory("General");
               }}
-              className="btn-ghost mt-8 rounded-full px-7 py-3 text-[11px] uppercase tracking-[0.2em]"
+              className="btn btn-outline mt-8"
             >
               Reset filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {filtered.map((p, i) => (
-              <Reveal
-                key={p.id}
-                variant="up"
-                delay={(i % 4) * 90}
-                className="h-full"
-              >
-                <ProductCard
-                  product={p}
-                  onWishlistToggle={toggleWishlist}
-                  isWishlisted={wishlist.includes(p.id)}
-                />
+              <Reveal key={p.id} delay={(i % 4) * 50}>
+                <ProductCard product={p} index={p.id} />
               </Reveal>
             ))}
           </div>
         )}
       </section>
-    </div>
+
+      <CallToAction
+        title="Not on the list?"
+        body="The catalogue is what we hold in stock, not the limit of what we source. Send a specification and we will come back with options."
+        primary={{ to: "/contact", label: "Send a specification" }}
+        secondary={{ href: CONTACT.whatsappHref, label: "WhatsApp" }}
+      />
+    </>
   );
 }

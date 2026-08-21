@@ -1,6 +1,7 @@
-// All images sourced from Wikimedia Commons (public domain / CC licensed).
-// URLs use the standard upload.wikimedia.org CDN — they render correctly in
-// any browser (Wikimedia only blocks non-browser bot traffic at the server level).
+// data.js — the product catalogue.
+//
+// Images are local files served from /public. Company facts, contact details
+// and navigation live in site.js.
 
 export const PRODUCTS = [
   // ── Food Grade Raw Materials ─────────────────────────────────────────────
@@ -228,71 +229,74 @@ export const CATEGORIES = [
   "Vitamins",
 ];
 
-
-export const HERO_SLIDES = [
-  {
-    label: "Chapter 01 — Purity",
-    headline: "Chemistry,\nrefined.",
-    sub: "Food-grade, industrial and pharmaceutical raw materials, sourced to specification and delivered with full traceability.",
-    cta: "View Catalogue",
-    img: "https://images.unsplash.com/photo-1581093458791-9d4248b5a7a6?auto=format&fit=crop&w=1600&h=1000&q=80",
-  },
-  {
-    label: "Chapter 02 — Provenance",
-    headline: "Sourced\nwith intent.",
-    sub: "Audited mills and refineries across four continents. Every lot arrives with certificates of analysis you can act on.",
-    cta: "Our Standards",
-    img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&w=1600&h=1000&q=80",
-  },
-  {
-    label: "Chapter 03 — Scale",
-    headline: "Delivered\nat scale.",
-    sub: "From 25kg trial quantities to full container loads — warehoused in Nigeria, moving on your production schedule.",
-    cta: "Talk to Us",
-    img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1600&h=1000&q=80",
-  },
-];
-
-// Category storytelling used by the homepage chapter cards.
+/**
+ * The four disciplines, as shown on the homepage index.
+ *
+ * `count` is derived from PRODUCTS rather than written down, so the figure on
+ * the page can never drift out of step with the catalogue.
+ */
 export const CATEGORY_META = [
   {
     name: "Food Grade Raw Materials",
+    short: "Food Grade",
     index: "01",
     blurb:
       "Starches, glucose syrups, acidulants and emulsifiers for beverage, bakery and confectionery lines.",
   },
   {
     name: "Industrial Grade",
+    short: "Industrial",
     index: "02",
     blurb:
-      "Caustics, acids and solvents specified for treatment, manufacturing and process chemistry.",
+      "Caustics, acids and solvents for treatment, manufacturing and process chemistry.",
   },
   {
     name: "Sweeteners",
+    short: "Sweeteners",
     index: "03",
     blurb:
-      "High-intensity sweetener systems formulated for consistent sweetness at reduced cost in use.",
+      "High-intensity sweeteners for consistent sweetness at a lower cost in use.",
   },
   {
     name: "Vitamins",
+    short: "Vitamins",
     index: "04",
     blurb:
-      "Fortification-ready vitamin premixes and actives with stability data for your matrix.",
+      "Vitamin actives and fortification-ready grades for premix and reformulation work.",
+  },
+].map((c) => ({
+  ...c,
+  count: PRODUCTS.filter((p) => p.category === c.name).length,
+}));
+
+/** How we work. Four commitments, no numbers we cannot stand behind. */
+export const PRACTICES = [
+  {
+    index: "01",
+    title: "Documented on arrival",
+    body: "Every consignment ships with a certificate of analysis, batch number and manufacture date, matched to the lot in your store.",
+  },
+  {
+    index: "02",
+    title: "Grade-correct, always",
+    body: "Food, pharmaceutical and industrial grades are stored and handled separately. What you specify is what reaches your process.",
+  },
+  {
+    index: "03",
+    title: "Held in stock locally",
+    body: "Warehoused in Lagos and dispatched nationwide — trial quantities through to full container loads, without waiting on a vessel.",
+  },
+  {
+    index: "04",
+    title: "Technical people on the line",
+    body: "Speak to someone who knows the material: substitutions, handling, storage and dosage guidance included.",
   },
 ];
 
-export const STATS = [
-  { value: 34, suffix: "+", label: "Active product lines" },
-  { value: 12, suffix: "yrs", label: "Supplying industry" },
-  { value: 99.8, suffix: "%", label: "Spec conformance", decimals: 1 },
-  { value: 48, suffix: "h", label: "Typical dispatch" },
-];
-
-export const MARQUEE_TERMS = [
-  "Certificates of Analysis",
-  "ISO-Aligned Sourcing",
-  "Bulk & Trial Quantities",
-  "Traceable Lots",
-  "Technical Support",
-  "Nationwide Logistics",
+/** Paperwork issued with each consignment. */
+export const DOCUMENTATION = [
+  "Certificate of Analysis",
+  "Technical Data Sheet",
+  "Safety Data Sheet",
+  "Batch & manufacture date",
 ];
