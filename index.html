@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/cj-deluz.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#02100a" />
     <meta
       name="description"
-      content="CJ-DELUZ (NIG) LTD supplies chemical raw materials to food, beverage, pharmaceutical and industrial manufacturers in Nigeria. Food grade, industrial grade, sweeteners and vitamins, stocked in Lagos."
+      content="CJ-DELUZ (NIG) LTD — chemical raw materials for food, beverage, pharmaceutical and industrial manufacturing. Food grade, industrial grade, sweeteners and vitamins, stocked in Lagos."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,85 +18,16 @@
     />
 
     <title>CJ-DELUZ (NIG) LTD — Chemical Raw Materials</title>
-
-    <!--
-      Theme is resolved before first paint so there is no flash of the wrong
-      ground colour. Three states: an explicit choice writes data-theme, and the
-      default (no attribute) follows the operating system.
-    -->
     <style>
-      :root {
-        color-scheme: light dark;
-      }
-      html {
-        background-color: #f4f1e8;
-      }
-      @media (prefers-color-scheme: dark) {
-        html:not([data-theme='light']) {
-          background-color: #0b120e;
-        }
-      }
-      html[data-theme='dark'] {
-        background-color: #0b120e;
-      }
-      html[data-theme='light'] {
-        background-color: #f4f1e8;
+      /* Prevents a white flash before the stylesheet lands */
+      html,
+      body {
+        background-color: #02100a;
       }
     </style>
-    <script>
-      ;(function () {
-        try {
-          var t = localStorage.getItem('cjd-theme')
-          if (t === 'light' || t === 'dark')
-            document.documentElement.setAttribute('data-theme', t)
-        } catch (e) {
-          /* private mode — fall back to the system preference */
-        }
-      })()
-    </script>
   </head>
   <body>
     <div id="root"></div>
-
-    <!--
-      Last-resort diagnostic. If a script fails before React mounts, the page is
-      nothing but the background colour above and the visitor has no idea why.
-      This puts the real error on screen instead of a blank rectangle.
-
-      It only ever runs while #root is still empty, so it cannot mask a working
-      app, and it builds the message from text nodes — no innerHTML, so error
-      text is never interpreted as markup.
-    -->
-    <script>
-      window.addEventListener('error', function (e) {
-        var root = document.getElementById('root')
-        if (!root || root.childElementCount > 0) return
-
-        var box = document.createElement('pre')
-        box.style.cssText =
-          'margin:0;padding:24px;font:13px/1.7 ui-monospace,monospace;' +
-          'white-space:pre-wrap;word-break:break-word;color:#b3261e'
-
-        var title = document.createElement('strong')
-        title.textContent = 'The site failed to start.'
-        box.appendChild(title)
-
-        var msg = document.createElement('div')
-        msg.style.marginTop = '12px'
-        msg.textContent = e && e.message ? e.message : 'Unknown error'
-        box.appendChild(msg)
-
-        if (e && e.filename) {
-          var where = document.createElement('div')
-          where.style.cssText = 'margin-top:8px;opacity:.7'
-          where.textContent = e.filename + ':' + e.lineno
-          box.appendChild(where)
-        }
-
-        root.appendChild(box)
-      })
-    </script>
-
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

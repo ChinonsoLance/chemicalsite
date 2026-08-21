@@ -1,595 +1,574 @@
 @import "tailwindcss";
 
 /* ============================================================
-   CJ-DELUZ — design tokens
-
-   The palette is defined once, in light, and re-declared for dark. Nothing
-   below this block should ever hard-code a colour: every surface, rule and
-   piece of text reads a token, which is what makes the theme switch a single
-   attribute flip rather than a per-component branch.
-
-   Type is a three-voice system:
-     Montserrat     — headlines. Geometric, set at a restrained weight.
-     IBM Plex Sans  — reading text. Slightly technical, high legibility.
-     IBM Plex Mono  — labels, indices, quantities. Anything that is data.
+   CJ-DELUZ — cinematic design tokens
    ============================================================ */
 @theme {
   --font-display: "Montserrat", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Light — warm cream paper, near-black ink with a green cast, deep emerald. */
-  --color-paper: #f4f1e8;
-  --color-surface: #fffdf7;
-  --color-sunken: #e8e3d5;
-  --color-ink: #10150e;
-  --color-ink-2: #464c3f;
-  --color-ink-3: #656b5a;
-  --color-rule: #d6d0be;
-  --color-rule-strong: #b6af9a;
-  --color-accent: #076b3c;
-  --color-accent-ink: #fffdf7;
-  --color-accent-soft: #dbecdf;
-  --color-inverse: #10150e;
-  --color-inverse-ink: #f4f1e8;
-}
-
-/* Explicit dark choice. */
-:root[data-theme="dark"] {
-  --color-paper: #0b120e;
-  --color-surface: #131c16;
-  --color-sunken: #070d09;
-  --color-ink: #eef2ea;
-  --color-ink-2: #a3ad9f;
-  --color-ink-3: #869180;
-  --color-rule: #24302a;
-  --color-rule-strong: #38473e;
-  --color-accent: #3fd98a;
-  --color-accent-ink: #04160c;
-  --color-accent-soft: #10261a;
-  --color-inverse: #131c16;
-  --color-inverse-ink: #eef2ea;
-}
-
-/* System preference, unless the visitor has explicitly chosen light. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-paper: #0b120e;
-    --color-surface: #131c16;
-    --color-sunken: #070d09;
-    --color-ink: #eef2ea;
-    --color-ink-2: #a3ad9f;
-    --color-ink-3: #869180;
-    --color-rule: #24302a;
-    --color-rule-strong: #38473e;
-    --color-accent: #3fd98a;
-    --color-accent-ink: #04160c;
-    --color-accent-soft: #10261a;
-    --color-inverse: #131c16;
-    --color-inverse-ink: #eef2ea;
-  }
+  --color-abyss: #02100a;
+  --color-forest-950: #04170e;
+  --color-forest-900: #062315;
+  --color-forest-800: #08351f;
+  --color-forest-700: #0a4a2b;
+  --color-jade-600: #0d9e4e;
+  --color-jade-500: #16b862;
+  --color-jade-400: #34d97f;
+  --color-jade-300: #7cf0ae;
+  --color-mist: #d9e7de;
+  --color-haze: #96ad9e;
 }
 
 :root {
-  --shell: 1240px;
-  --nav-h: 68px;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Corner radii. One scale, used everywhere, so nothing looks hand-placed. */
-  --r-sm: 8px;
-  --r-md: 12px;
-  --r-lg: 18px;
-  --r-pill: 999px;
+  --shell: 1280px;
+  --nav-h: 76px;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --scroll-progress: 0;
+  --page-depth: 0;
 }
 
 /* ============================================================
    Base
    ============================================================ */
 * {
-  border-color: var(--color-rule);
+  border-color: color-mix(in oklab, var(--color-jade-400) 12%, transparent);
 }
 
 html {
+  background-color: var(--color-abyss);
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  /* `clip` (not `hidden`) contains the sideways reveal offsets without turning
+     the root into a scroll container — position: sticky keeps working. */
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  background-color: var(--color-abyss);
+  color: var(--color-mist);
   font-family: var(--font-sans);
-  font-size: 15.5px;
-  line-height: 1.68;
+  font-weight: 400;
+  letter-spacing: -0.006em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
 }
 
-/* The one piece of atmosphere: a drafting grid, barely there. Static, no
-   layers, no animation — it costs a single background-image on the body. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(to right, var(--color-rule) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-rule) 1px, transparent 1px);
-  background-size: 96px 96px;
-  opacity: 0.45;
-  mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 100%);
-}
-
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-accent-ink);
+  background: color-mix(in oklab, var(--color-jade-400) 32%, transparent);
+  color: #fff;
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-  border-radius: var(--r-sm);
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-abyss);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--color-jade-600) 45%, #000);
+  border-radius: 99px;
+  border: 2px solid var(--color-abyss);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-jade-600);
 }
 
 input,
 textarea,
 select,
 button {
-  font: inherit;
-  color: inherit;
-}
-
-img {
-  max-width: 100%;
-  display: block;
+  font-family: inherit;
+  letter-spacing: inherit;
 }
 
 /* ============================================================
-   Layout
+   The unified cinematic backdrop (fixed, spans the whole site)
    ============================================================ */
-.wrap {
-  margin-inline: auto;
-  max-width: var(--shell);
-  padding-inline: 20px;
-}
-@media (min-width: 640px) {
-  .wrap {
-    padding-inline: 32px;
-  }
+/* z-index 0 (not negative): a negative-z fixed layer would be painted *behind*
+   the opaque <body> background and disappear entirely. Page content sits at
+   z-10 and above, so this still stays behind everything. */
+.site-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 50% -10%, #0b3f24 0%, transparent 60%),
+    radial-gradient(90% 60% at 100% 20%, #05341d 0%, transparent 65%),
+    linear-gradient(180deg, #04170e 0%, #02100a 42%, #041a10 70%, #02100a 100%);
 }
 
-/* The site's structural signature: a labelled band. The mono label and index
-   sit in a narrow left column, the content fills the rest — the way a spec
-   sheet or a parts catalogue is set. Repeated on every page, it is what makes
-   the pages read as one document. */
-.band {
-  border-top: 1px solid var(--color-rule);
-  padding-block: 64px;
+/* Slow-drifting aurora orbs, nudged by scroll depth.
+   No `filter: blur()` here on purpose: a radial-gradient that fades to
+   transparent already *is* a blur, and a real 110px blur on a 60vw box has to
+   be re-rasterised whenever the layer changes -- which, with an infinite
+   animation on it, meant every frame. The stops below are widened to match
+   what the blurred version looked like. */
+.backdrop-orb {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.42;
+  will-change: transform;
 }
-@media (min-width: 900px) {
-  .band {
-    padding-block: 92px;
-  }
-  .band-grid {
-    display: grid;
-    grid-template-columns: 190px 1fr;
-    gap: 56px;
-  }
+.backdrop-orb--a {
+  width: 78vw;
+  height: 78vw;
+  top: -26vw;
+  left: -20vw;
+  background: radial-gradient(circle, #0d9e4e 0%, rgba(13, 158, 78, 0.55) 26%, rgba(13, 158, 78, 0.16) 52%, transparent 76%);
+  transform: translate3d(0, calc(var(--page-depth) * -160px), 0);
+  animation: orb-drift-a 26s ease-in-out infinite alternate;
 }
-.band-label {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 26px;
+.backdrop-orb--b {
+  width: 68vw;
+  height: 68vw;
+  top: 30vh;
+  right: -26vw;
+  background: radial-gradient(circle, #0f7d63 0%, rgba(15, 125, 99, 0.5) 28%, rgba(15, 125, 99, 0.14) 54%, transparent 78%);
+  opacity: 0.34;
+  transform: translate3d(0, calc(var(--page-depth) * 200px), 0);
+  animation: orb-drift-b 32s ease-in-out infinite alternate;
 }
-@media (min-width: 900px) {
-  .band-label {
-    margin-bottom: 0;
-    position: sticky;
-    top: calc(var(--nav-h) + 40px);
-    align-self: start;
-  }
+.backdrop-orb--c {
+  width: 58vw;
+  height: 58vw;
+  bottom: -22vw;
+  left: 16vw;
+  background: radial-gradient(circle, #14532d 0%, rgba(20, 83, 45, 0.55) 30%, rgba(20, 83, 45, 0.15) 56%, transparent 80%);
+  opacity: 0.5;
+  transform: translate3d(0, calc(var(--page-depth) * -110px), 0);
+  animation: orb-drift-c 38s ease-in-out infinite alternate;
 }
+
+/* Translate only -- animating `scale` here would re-raster the layer. */
+@keyframes orb-drift-a {
+  to { translate: 12vw 6vh; }
+}
+@keyframes orb-drift-b {
+  to { translate: -14vw -8vh; }
+}
+@keyframes orb-drift-c {
+  to { translate: 10vw -5vh; }
+}
+
+/* Engineering grid — parallaxes with the page */
+.backdrop-grid {
+  position: absolute;
+  inset: -50vh -10vw;
+  background-image:
+    linear-gradient(to right, rgba(124, 240, 174, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(124, 240, 174, 0.055) 1px, transparent 1px);
+  background-size: 92px 92px;
+  mask-image: radial-gradient(70% 55% at 50% 40%, #000 0%, transparent 100%);
+  transform: translate3d(0, calc(var(--page-depth) * 90px), 0);
+  will-change: transform;
+}
+
+/* Vertical light beams */
+.backdrop-beams {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, transparent 0%, rgba(52, 217, 127, 0.07) 50%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, rgba(52, 217, 127, 0.05) 50%, transparent 100%);
+  background-size: 2px 100%, 2px 100%;
+  background-position: 22% 0, 74% 0;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+}
+
+/* Vignette + film grain keep it cinematic */
+.backdrop-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 40%, rgba(1, 8, 5, 0.72) 100%);
+}
+.backdrop-grain {
+  position: absolute;
+  inset: -6%;
+  opacity: 0.16;
+  will-change: transform;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  animation: grain-shift 700ms steps(4) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, 1%); }
+  50% { transform: translate(1%, -2%); }
+  75% { transform: translate(-1%, -1%); }
+  100% { transform: translate(2%, 1%); }
+}
+
+/* ============================================================
+   Scroll-trigger primitives
+   ============================================================ */
+.parallax-layer {
+  will-change: transform;
+}
+
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.95s var(--ease-out-expo),
+    transform 1.15s var(--ease-out-expo),
+    clip-path 1.15s var(--ease-out-expo);
+}
+/* A GPU layer is handed out only to reveals that are about to fire (armed by
+   the proximity observer in useScroll.js) and taken back once they land. A
+   permanent `will-change` on all ~50 reveals on a page exhausts layer memory
+   on mobile GPUs and drops the compositor into software rendering. */
+.reveal.is-armed:not(.is-in) {
+  will-change: opacity, transform;
+}
+.reveal--up { transform: translate3d(0, 46px, 0); }
+.reveal--down { transform: translate3d(0, -34px, 0); }
+.reveal--left { transform: translate3d(-52px, 0, 0); }
+.reveal--right { transform: translate3d(52px, 0, 0); }
+.reveal--scale { transform: scale(0.92); }
+.reveal--fade { transform: none; }
+.reveal--curtain {
+  transform: translate3d(0, 26px, 0);
+  clip-path: inset(0 0 100% 0);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+  will-change: auto;
+}
+
+/* Line that draws itself in */
+.rule-draw {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.3s var(--ease-out-expo);
+}
+.rule-draw.is-in { transform: scaleX(1); }
+
+/* Word-by-word headline reveal */
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.word {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 1.05s var(--ease-out-expo);
+}
+.is-in .word { transform: translateY(0); }
+
+/* ============================================================
+   Surfaces
+   ============================================================ */
+/* `.glass` is the cheap one: a static tint, no backdrop-filter. Use it for
+   in-flow surfaces (cards, panels) -- there can be dozens on screen at once,
+   and each backdrop-filter layer costs a full sample-and-blur of everything
+   behind it on every frame it moves. */
+.glass {
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.062) 0%,
+    rgba(255, 255, 255, 0.028) 45%,
+    rgba(6, 35, 21, 0.55) 100%
+  );
+  border: 1px solid rgba(124, 240, 174, 0.13);
+}
+/* `.glass-blur` is the expensive one. Reserve it for the handful of surfaces
+   that genuinely float over moving content -- nav, drawers, modals. */
+.glass-blur {
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+}
+.glass-strong {
+  background: linear-gradient(150deg, rgba(9, 40, 24, 0.97) 0%, rgba(3, 18, 11, 0.98) 100%);
+  border: 1px solid rgba(124, 240, 174, 0.16);
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(124, 240, 174, 0.32) 22%,
+    rgba(124, 240, 174, 0.32) 78%,
+    transparent
+  );
+}
+
+/* Card with a travelling sheen on hover */
+.lux-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 0.7s var(--ease-out-expo),
+    border-color 0.5s ease,
+    box-shadow 0.7s var(--ease-out-expo);
+}
+.lux-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.13) 48%, transparent 64%);
+  translate: -120% 0;
+  transition: translate 0.95s var(--ease-out-expo);
+}
+.lux-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(52, 217, 127, 0.42);
+  box-shadow:
+    0 30px 60px -28px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(52, 217, 127, 0.14),
+    0 0 60px -18px rgba(13, 158, 78, 0.45);
+}
+.lux-card:hover::after { translate: 120% 0; }
 
 /* ============================================================
    Type
-
-   Headlines are set at 700 rather than 800 and at a gentler tracking than a
-   pure poster setting would use: at these sizes the extra weight and the very
-   tight fit read as shouting rather than as confidence.
    ============================================================ */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-jade-300);
+}
+/* Montserrat set for display: geometric, so it wants a real bold and a
+   little negative tracking to close the counters up at large sizes. The
+   optical-size and WONK axes the previous face used do not exist here. */
 .display {
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.022em;
-  line-height: 1.02;
-  text-wrap: balance;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
 }
 .display-sm {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -0.012em;
-  line-height: 1.2;
 }
-.label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-ink-3);
+.text-shimmer {
+  background: linear-gradient(100deg, #ffffff 0%, #c9f7dd 34%, #34d97f 52%, #eafff2 72%, #ffffff 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 7s linear infinite;
 }
-.label-accent {
-  color: var(--color-accent);
-}
-.num {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
-}
-.lede {
-  font-size: 1rem;
-  line-height: 1.72;
-  color: var(--color-ink-2);
-  text-wrap: pretty;
-}
-@media (min-width: 768px) {
-  .lede {
-    font-size: 1.0625rem;
-  }
-}
-.prose-body {
-  color: var(--color-ink-2);
-  text-wrap: pretty;
-}
-
-/* ============================================================
-   Rules & surfaces
-   ============================================================ */
-.rule {
-  height: 1px;
-  background: var(--color-rule);
-  border: 0;
-}
-
-.panel {
-  background: var(--color-surface);
-  border: 1px solid var(--color-rule);
-  border-radius: var(--r-md);
-}
-
-/* A bordered container whose children are divided by hairlines. Used for the
-   data strips; `overflow: hidden` is what lets the radius clip the cells. */
-.grid-box {
-  border: 1px solid var(--color-rule);
-  border-radius: var(--r-md);
-  overflow: hidden;
-  background: var(--color-rule);
-  display: grid;
-  gap: 1px;
-}
-.grid-box > * {
-  background: var(--color-paper);
-}
-
-.inverse {
-  background: var(--color-inverse);
-  color: var(--color-inverse-ink);
-}
-.inverse .label {
-  color: color-mix(in oklab, var(--color-inverse-ink) 58%, transparent);
-}
-
-/* ============================================================
-   Index rows — the catalogue device.
-   A numbered row with a hairline above; the hover fill is inset and rounded
-   so it reads as a soft target rather than a full-bleed stripe.
-   ============================================================ */
-.row-item {
-  display: block;
-  position: relative;
-  border-top: 1px solid var(--color-rule);
-  padding-block: 24px;
-}
-.row-item:last-child {
-  border-bottom: 1px solid var(--color-rule);
-}
-a.row-item::before {
-  content: "";
-  position: absolute;
-  inset: 4px -14px;
-  border-radius: var(--r-md);
-  background: var(--color-sunken);
-  opacity: 0;
-  transition: opacity 0.25s var(--ease);
-  pointer-events: none;
-}
-a.row-item:hover::before {
-  opacity: 1;
-}
-a.row-item > * {
-  position: relative;
-}
-.row-arrow {
-  transition: transform 0.35s var(--ease);
-}
-a.row-item:hover .row-arrow {
-  transform: translateX(6px);
+@keyframes shimmer {
+  to { background-position: -220% 0; }
 }
 
 /* ============================================================
    Buttons
    ============================================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 12px 22px;
-  border-radius: var(--r-pill);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition:
-    background-color 0.25s var(--ease),
-    border-color 0.25s var(--ease),
-    color 0.25s var(--ease);
-}
-.btn-solid {
-  background: var(--color-accent);
-  color: var(--color-accent-ink);
-}
-.btn-solid:hover {
-  background: color-mix(in oklab, var(--color-accent) 84%, var(--color-ink));
-}
-.btn-outline {
-  border-color: var(--color-rule-strong);
-  color: var(--color-ink);
-}
-.btn-outline:hover {
-  border-color: var(--color-ink);
-  background: var(--color-sunken);
-}
-.inverse .btn-outline {
-  border-color: color-mix(in oklab, var(--color-inverse-ink) 34%, transparent);
-  color: var(--color-inverse-ink);
-}
-.inverse .btn-outline:hover {
-  border-color: var(--color-inverse-ink);
-  background: color-mix(in oklab, var(--color-inverse-ink) 10%, transparent);
-}
-
-/* Square-ish icon button — theme toggle, menu trigger. */
-.btn-icon {
-  display: flex;
-  height: 36px;
-  width: 36px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--color-rule);
-  border-radius: var(--r-sm);
-  color: var(--color-ink-2);
-  transition:
-    border-color 0.25s var(--ease),
-    color 0.25s var(--ease);
-}
-.btn-icon:hover {
-  border-color: var(--color-ink);
-  color: var(--color-ink);
-}
-
-/* Underlined text link with a rule that wipes on hover */
-.link-rule {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
+.btn-primary {
   position: relative;
-  padding-bottom: 3px;
-  color: var(--color-accent);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(135deg, var(--color-jade-500), var(--color-jade-600) 55%, #0a7a3c);
+  color: #02100a;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: 0 16px 40px -18px rgba(22, 184, 98, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+  transition: transform 0.45s var(--ease-out-expo), box-shadow 0.45s var(--ease-out-expo);
 }
-.link-rule::after {
+.btn-primary::before {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 1px;
-  width: 100%;
-  background: currentColor;
-  transform-origin: right;
-  transform: scaleX(1);
-  transition: transform 0.4s var(--ease);
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, var(--color-jade-300), var(--color-jade-400));
+  opacity: 0;
+  transition: opacity 0.45s ease;
 }
-.link-rule:hover::after {
-  transform-origin: left;
-  transform: scaleX(0);
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 50px -18px rgba(52, 217, 127, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.btn-primary:hover::before { opacity: 1; }
+
+.btn-ghost {
+  position: relative;
+  overflow: hidden;
+  color: var(--color-mist);
+  border: 1px solid rgba(124, 240, 174, 0.28);
+  background: rgba(255, 255, 255, 0.035);
+  transition: border-color 0.45s ease, background 0.45s ease, transform 0.45s var(--ease-out-expo);
+}
+.btn-ghost:hover {
+  border-color: rgba(52, 217, 127, 0.72);
+  background: rgba(52, 217, 127, 0.1);
+  transform: translateY(-2px);
 }
 
-/* Pill filter chip */
-.chip {
-  flex-shrink: 0;
-  border: 1px solid var(--color-rule);
-  border-radius: var(--r-pill);
-  padding: 7px 15px;
-  transition:
-    background-color 0.2s var(--ease),
-    border-color 0.2s var(--ease),
-    color 0.2s var(--ease);
+/* The one floating-glass surface the site keeps: the nav genuinely sits over
+   moving content, so the blur is doing visible work. Everything else that used
+   to carry a backdrop-filter now uses an opaque tint instead. */
+.nav-glass {
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
 }
-.chip:hover {
-  border-color: var(--color-ink);
-  color: var(--color-ink);
-}
-.chip[aria-pressed="true"] {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-accent-ink);
+.perf-lite .nav-glass {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background-color: rgba(2, 16, 10, 0.95);
 }
 
-/* ============================================================
-   Nav
-   ============================================================ */
+/* Animated underline for nav items */
 .nav-link {
   position: relative;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-ink-2);
-  transition: color 0.25s var(--ease);
-  padding-block: 4px;
+  color: color-mix(in oklab, var(--color-mist) 72%, transparent);
+  transition: color 0.35s ease;
 }
-.nav-link:hover,
-.nav-link[data-active="true"] {
-  color: var(--color-ink);
-}
-.nav-link[data-active="true"]::after {
+.nav-link::after {
   content: "";
   position: absolute;
   left: 0;
-  right: 0;
-  bottom: -2px;
+  bottom: -6px;
   height: 1px;
-  border-radius: var(--r-pill);
-  background: var(--color-accent);
+  width: 100%;
+  background: var(--color-jade-400);
+  scale: 0 1;
+  transform-origin: right;
+  transition: scale 0.5s var(--ease-out-expo);
+}
+.nav-link:hover,
+.nav-link[data-active="true"] { color: #fff; }
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after {
+  scale: 1 1;
+  transform-origin: left;
 }
 
 /* ============================================================
-   Catalogue card
+   Marquee
    ============================================================ */
-.card {
+.marquee {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-  background: var(--color-surface);
-  border: 1px solid var(--color-rule);
-  border-radius: var(--r-md);
-  transition: border-color 0.25s var(--ease);
+  width: max-content;
+  animation: marquee-run 44s linear infinite;
 }
-.card:hover {
-  border-color: var(--color-ink-3);
-}
-.card-plate {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  background: var(--color-sunken);
-  border-bottom: 1px solid var(--color-rule);
-}
-.card-plate img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  transition: transform 0.7s var(--ease);
-}
-.card:hover .card-plate img {
-  transform: scale(1.04);
+.marquee:hover { animation-play-state: paused; }
+@keyframes marquee-run {
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 /* ============================================================
-   Form fields — boxed, to match the rounded language.
+   Misc motion
    ============================================================ */
-.field {
-  width: 100%;
-  background: var(--color-surface);
-  border: 1px solid var(--color-rule-strong);
-  border-radius: var(--r-sm);
-  padding: 11px 14px;
-  color: var(--color-ink);
-  transition:
-    border-color 0.2s var(--ease),
-    box-shadow 0.2s var(--ease);
-}
-.field::placeholder {
-  color: var(--color-ink-3);
-}
-.field:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-soft);
-}
-.field-label {
-  display: block;
-  margin-bottom: 7px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-ink-3);
+.float-slow { animation: float-slow 9s ease-in-out infinite; }
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
 }
 
+.scroll-cue span {
+  display: block;
+  width: 1px;
+  height: 54px;
+  background: linear-gradient(to bottom, transparent, var(--color-jade-400), transparent);
+  animation: cue 2.4s var(--ease-out-expo) infinite;
+}
+@keyframes cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+.loader-sweep {
+  animation: loader-sweep 1.15s var(--ease-out-expo) infinite;
+}
+@keyframes loader-sweep {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(320%); }
+}
+
+.spin-slow { animation: spin-slow 24s linear infinite; }
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+.fade-in-up { animation: fade-in-up 0.5s var(--ease-out-expo) both; }
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translate(-50%, 18px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* Autofill in dark fields */
 input:-webkit-autofill,
 textarea:-webkit-autofill {
-  -webkit-text-fill-color: var(--color-ink);
-  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset;
-  caret-color: var(--color-ink);
+  -webkit-text-fill-color: var(--color-mist);
+  -webkit-box-shadow: 0 0 0 1000px rgba(6, 35, 21, 0.9) inset;
+  caret-color: var(--color-mist);
 }
 
 /* ============================================================
-   Reveal on scroll — deliberately restrained.
-   Opacity and a short lift only: both are pure compositor work, so a page
-   full of them costs nothing. A GPU layer is handed out by the proximity
-   observer in useScroll.js and taken back the moment the reveal lands.
+   Accessibility
    ============================================================ */
-.reveal {
-  opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition:
-    opacity 0.6s var(--ease),
-    transform 0.6s var(--ease);
-}
-.reveal.is-armed:not(.is-in) {
-  will-change: opacity, transform;
-}
-.reveal.is-in {
-  opacity: 1;
-  transform: none;
-  will-change: auto;
-}
-
-.scrollbar-none {
-  scrollbar-width: none;
-}
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-
-/* ============================================================
-   Accessibility & low-power tier
-   ============================================================ */
-.perf-lite .reveal,
-.perf-lite .card-plate img {
-  transition: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .reveal {
+  .reveal,
+  .rule-draw,
+  .word {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
     transition: none !important;
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .marquee,
+  .backdrop-orb,
+  .backdrop-grain,
+  .float-slow,
+  .spin-slow,
+  .text-shimmer,
+  .scroll-cue span {
+    animation: none !important;
   }
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Low-power tier -- `.perf-lite` is set on <html> at boot by main.jsx for
+   small screens, low core counts, or devices asking to save data.
+   The scene keeps its composition; it just stops repainting.
+   ============================================================ */
+.perf-lite .backdrop-grain,
+.perf-lite .backdrop-beams {
+  display: none;
+}
+.perf-lite .backdrop-orb {
+  animation: none !important;
+}
+.perf-lite .glass-blur {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background-color: rgba(3, 18, 11, 0.92);
+}
+.perf-lite .text-shimmer {
+  animation: none;
+}
+.perf-lite .lux-card::after {
+  display: none;
+}
+.perf-lite .lux-card:hover {
+  transform: none;
 }
