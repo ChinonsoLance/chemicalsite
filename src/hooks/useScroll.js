@@ -249,3 +249,33 @@ export function useRevealRef(once = true) {
 
   return ref;
 }
+
+/**
+ * Returns a ref whose element carries `idleClass` whenever it is OFF screen.
+ *
+ * Infinite CSS animations keep running (and keep their compositor layers) even
+ * when scrolled far out of view, which on a long page means paying for every
+ * decorative loop on the site at once. Pair this with a rule like
+ * `.is-idle { animation-play-state: paused }` so only what you can actually
+ * see is animating.
+ */
+export function useIdleWhenOffscreen(idleClass = "is-idle", rootMargin = "15% 0px 15% 0px") {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => el.classList.toggle(idleClass, !entry.isIntersecting),
+      { rootMargin }
+    );
+    io.observe(el);
+    // Start parked; the observer un-parks it on the first callback.
+    el.classList.add(idleClass);
+
+    return () => io.disconnect();
+  }, [idleClass, rootMargin]);
+
+  return ref;
+}

@@ -29,19 +29,20 @@ const CONTACT_LINK = { to: "/contact", label: "Contact Us" };
 // ---------- Loading Screen ----------
 function LoadingScreen() {
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-abyss">
-      <div className="absolute inset-0 opacity-70">
-        <div className="backdrop-orb backdrop-orb--a" />
-        <div className="backdrop-orb backdrop-orb--c" />
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-forest-950">
+      <div className="absolute inset-0">
+        <div className="atmos-orb atmos-orb--a" />
+        <div className="atmos-orb atmos-orb--c" />
+        <div className="atmos-aurora" />
       </div>
 
       <div className="relative flex flex-col items-center gap-8">
         <div className="relative">
-          <div className="absolute -inset-10 rounded-full bg-jade-500/20 blur-3xl" />
+          <div className="absolute -inset-10 rounded-full bg-jade-500/25 blur-3xl" />
           <img
             src={logo}
             alt="CJ-DELUZ"
-            className="relative h-20 w-auto float-slow drop-shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
+            className="float-slow relative h-20 w-auto drop-shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
           />
         </div>
 
@@ -74,10 +75,10 @@ function ScrollProgress() {
   });
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-50 h-px bg-white/5">
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-50 h-[2px] bg-transparent">
       <div
         ref={barRef}
-        className="h-full origin-left bg-gradient-to-r from-jade-600 via-jade-300 to-jade-500 shadow-[0_0_14px_rgba(52,217,127,0.8)]"
+        className="h-full origin-left bg-gradient-to-r from-jade-700 via-jade-300 to-jade-500 shadow-[0_0_14px_rgba(47,224,140,0.85)]"
         style={{ transform: "scaleX(0)" }}
       />
     </div>
@@ -96,7 +97,7 @@ function CartDrawer({ cart, onClose, onRemove, onUpdateQty }) {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   return (
     <div className="fixed inset-0 z-[60] flex">
-      <div className="flex-1 bg-abyss/80" onClick={onClose} />
+      <div className="flex-1 bg-abyss/70" onClick={onClose} />
       <div className="glass-strong flex w-full max-w-md flex-col shadow-2xl">
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-5 sm:px-7">
           <h2 className="display text-2xl text-white">
@@ -122,7 +123,7 @@ function CartDrawer({ cart, onClose, onRemove, onUpdateQty }) {
                 </svg>
               </div>
               <p className="text-sm text-haze">Your cart is empty</p>
-              <button onClick={onClose} className="mt-4 text-sm font-medium text-jade-300 underline underline-offset-4">
+              <button onClick={onClose} className="mt-4 text-sm font-semibold text-jade-300 underline underline-offset-4">
                 Continue browsing
               </button>
             </div>
@@ -133,12 +134,12 @@ function CartDrawer({ cart, onClose, onRemove, onUpdateQty }) {
                   <img src={item.img} alt={item.name} className="h-full w-full object-cover" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="line-clamp-1 text-sm font-medium text-white">{item.name}</p>
+                  <p className="line-clamp-1 text-sm font-semibold text-white">{item.name}</p>
                   <p className="mt-0.5 text-xs text-haze">{item.category}</p>
                   <div className="mt-2 flex flex-wrap items-center gap-3">
                     <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2 py-0.5">
                       <button onClick={() => onUpdateQty(item.id, item.qty - 1)} className="h-5 w-5 text-haze hover:text-white">−</button>
-                      <span className="w-4 text-center text-xs font-medium text-white">{item.qty}</span>
+                      <span className="numeric w-4 text-center text-xs font-semibold text-white">{item.qty}</span>
                       <button onClick={() => onUpdateQty(item.id, item.qty + 1)} className="h-5 w-5 text-haze hover:text-white">+</button>
                     </div>
                     <button onClick={() => onRemove(item.id)} className="ml-auto text-haze transition-colors hover:text-rose-400">
@@ -157,7 +158,7 @@ function CartDrawer({ cart, onClose, onRemove, onUpdateQty }) {
           <div className="space-y-3 border-t border-white/10 px-5 py-6 sm:px-7">
             <div className="flex justify-between text-sm text-haze">
               <span>Subtotal</span>
-              <span className="font-mono">${total.toFixed(2)}</span>
+              <span className="numeric">${total.toFixed(2)}</span>
             </div>
             <button className="btn-primary mt-1 w-full rounded-full py-3.5 text-sm">
               Request Quote
@@ -181,6 +182,9 @@ function Toast({ message }) {
 }
 
 // ---------- Navbar ----------
+// The bar stays emerald in both zones. Every page opens on a dark band, so at
+// the top of a page it can sit transparent over that band; once scrolled it
+// becomes a floating emerald glass rail that reads over the paper below.
 function Navbar() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -190,7 +194,7 @@ function Navbar() {
   // frame of every scroll.
   const scrolledRef = useRef(false);
   useScrollTick((m) => {
-    const next = m.scrollY > 24;
+    const next = m.scrollY > 90;
     if (next === scrolledRef.current) return;
     scrolledRef.current = next;
     setScrolled(next);
@@ -212,7 +216,7 @@ function Navbar() {
       <header
         className={`fixed inset-x-0 top-0 z-40 transition-all duration-700 ${
           scrolled
-            ? "nav-glass border-b border-white/10 bg-abyss/72"
+            ? "nav-glass border-b border-jade-300/12"
             : "border-b border-transparent bg-transparent"
         }`}
       >
@@ -220,12 +224,12 @@ function Navbar() {
           {/* Left — mark */}
           <Link to="/" className="group flex items-center gap-3" aria-label="CJ-DELUZ home">
             <span className="relative">
-              <span className="absolute -inset-3 rounded-full bg-jade-500/0 blur-xl transition-all duration-500 group-hover:bg-jade-500/25" />
+              <span className="absolute -inset-3 rounded-full bg-jade-500/0 blur-xl transition-all duration-500 group-hover:bg-jade-500/30" />
               <img src={logo} alt="CJ-DELUZ" className="relative h-11 w-auto sm:h-12" />
             </span>
             <span className="hidden flex-col leading-none sm:flex">
               <span className="display text-lg text-white">CJ-DELUZ</span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-jade-300/70">
+              <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-jade-300/75">
                 Nig. Ltd
               </span>
             </span>
@@ -234,16 +238,16 @@ function Navbar() {
           {/* Centre — primary links, optically centred on the page itself */}
           <div className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 items-center gap-11 md:flex">
             <div className="pointer-events-auto flex items-center gap-11">
-            {CENTER_LINKS.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                data-active={isActive(link.to)}
-                className="nav-link text-[13px] font-medium uppercase tracking-[0.16em]"
-              >
-                {link.label}
-              </NavLink>
-            ))}
+              {CENTER_LINKS.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  data-active={isActive(link.to)}
+                  className="nav-link text-[13px] uppercase tracking-[0.16em]"
+                >
+                  {link.label}
+                </NavLink>
+              ))}
             </div>
           </div>
 
@@ -251,10 +255,8 @@ function Navbar() {
           <div className="flex items-center justify-end gap-3">
             <Link
               to={CONTACT_LINK.to}
-              className={`hidden rounded-full px-6 py-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] transition-all duration-500 md:inline-flex ${
-                isActive(CONTACT_LINK.to)
-                  ? "btn-primary"
-                  : "btn-ghost"
+              className={`hidden rounded-full px-6 py-2.5 text-[12px] uppercase tracking-[0.16em] transition-all duration-500 md:inline-flex ${
+                isActive(CONTACT_LINK.to) ? "btn-primary" : "btn-ghost"
               }`}
             >
               {CONTACT_LINK.label}
@@ -262,7 +264,7 @@ function Navbar() {
 
             <button
               onClick={() => setMobileMenuOpen((v) => !v)}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white transition-colors hover:border-jade-400/50 md:hidden"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-jade-300/25 bg-white/5 text-white transition-colors hover:border-jade-400/60 md:hidden"
               aria-label="Toggle menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -290,25 +292,28 @@ function Navbar() {
         }`}
       >
         <div
-          className={`absolute inset-0 bg-abyss/97 transition-opacity duration-500 ${
+          className={`absolute inset-0 overflow-hidden bg-forest-950 transition-opacity duration-500 ${
             mobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={() => setMobileMenuOpen(false)}
-        />
+        >
+          <div className="atmos-orb atmos-orb--a" />
+          <div className="atmos-orb atmos-orb--c" />
+        </div>
         <div className="relative flex h-full flex-col justify-center px-8">
           {[...CENTER_LINKS, CONTACT_LINK].map((link, i) => (
             <Link
               key={link.to}
               to={link.to}
               onClick={() => setMobileMenuOpen(false)}
-              className="group border-b border-white/8 py-5"
+              className="group border-b border-jade-300/12 py-5"
               style={{
                 transform: mobileMenuOpen ? "translateY(0)" : "translateY(28px)",
                 opacity: mobileMenuOpen ? 1 : 0,
                 transition: `transform .8s var(--ease-out-expo) ${i * 70}ms, opacity .8s var(--ease-out-expo) ${i * 70}ms`,
               }}
             >
-              <span className="font-mono text-[10px] tracking-[0.3em] text-jade-300/60">
+              <span className="numeric text-[10px] font-semibold tracking-[0.3em] text-jade-300/70">
                 0{i + 1}
               </span>
               <span
@@ -334,9 +339,39 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // The loader used to sit for a flat 1.5s on every single visit, which is
+  // 1.5s of "this site is slow" before anything could possibly render. Now it
+  // clears as soon as the page is actually ready: a short floor so it does not
+  // flash, and a hard ceiling so a slow font or image can never hold the site
+  // hostage.
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
+    const MIN_MS = 350;
+    const MAX_MS = 1200;
+    const started = performance.now();
+    let done = false;
+
+    const finish = () => {
+      if (done) return;
+      done = true;
+      const elapsed = performance.now() - started;
+      const wait = Math.max(0, MIN_MS - elapsed);
+      setTimeout(() => setIsLoading(false), wait);
+    };
+
+    const ceiling = setTimeout(finish, MAX_MS);
+
+    // Fonts matter here: the whole site is Montserrat, so clearing the loader
+    // before it lands would show a flash of fallback type.
+    const ready = document.fonts?.ready ?? Promise.resolve();
+    ready.then(finish);
+
+    if (document.readyState === "complete") finish();
+    else window.addEventListener("load", finish, { once: true });
+
+    return () => {
+      clearTimeout(ceiling);
+      window.removeEventListener("load", finish);
+    };
   }, []);
 
   const showToast = (msg) => {
@@ -370,7 +405,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {/* One atmosphere for the entire site — never remounts between routes */}
+      {/* The paper sheet the whole site sits on — never remounts between routes */}
       <Backdrop />
       <ScrollToTop />
       <Navbar />

@@ -41,14 +41,17 @@ export function Reveal({
   );
 }
 
-/** A hairline rule that draws itself across when scrolled into view. */
-export function DrawRule({ className = "", delay = 0 }) {
+/**
+ * A hairline rule that draws itself across when scrolled into view.
+ * tone: "glow" for dark sections, "ink" for the paper zone.
+ */
+export function DrawRule({ className = "", delay = 0, tone = "glow" }) {
   const ref = useRevealRef(true);
 
   return (
     <div
       ref={ref}
-      className={`rule-draw hairline ${className}`}
+      className={`rule-draw ${tone === "ink" ? "hairline-ink" : "hairline"} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     />
   );
