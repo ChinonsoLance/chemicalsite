@@ -10,9 +10,9 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
 
   // Your contact details
-  const phoneNumber = "+234 704 753 5828";
-  const whatsappNumber = "+234 704 753 5828";
-  const whatsappLink = "https://wa.me/2347047535828"; // digits only for WhatsApp
+  const phoneNumber = "+234 808 410 8929";
+  const whatsappNumber = "+234 808 410 8929";
+  const whatsappLink = "https://wa.me/2348084108929"; // digits only for WhatsApp
 
   const handleSubmit = (e) => {
     e.preventDefault();

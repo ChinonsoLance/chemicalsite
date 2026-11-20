@@ -60,12 +60,12 @@ export default function Footer() {
               lot by lot.
             </p>
             <a
-              href="https://wa.me/2347047535828"
+              href="https://wa.me/2348084108929"
               target="_blank"
               rel="noopener noreferrer"
               className="group mt-8 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-jade-300"
             >
-              +234 704 753 5828
+              +234 808 410 8929
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
           </Reveal>

@@ -646,7 +646,7 @@ function Closing() {
               <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
             </Link>
             <a
-              href="https://wa.me/2347047535828"
+              href="https://wa.me/2348084108929"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-ghost inline-flex items-center gap-2.5 rounded-full px-9 py-4 text-[12px] uppercase tracking-[0.18em]"
