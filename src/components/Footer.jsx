@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal, DrawRule } from "./Motion";
 import Atmosphere from "./Atmosphere";
+import { WhatsAppIcon } from "./WhatsApp";
 import logo from "../assets/cj-deluz.png";
 
 const columns = [
@@ -65,6 +66,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="group mt-8 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-jade-300"
             >
+              <WhatsAppIcon className="h-4 w-4" />
               +234 808 410 8929
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>

@@ -13,6 +13,7 @@ import Contact from "./Contact";
 import Products from "./Products";
 import Footer from "./components/Footer";
 import Backdrop from "./components/Backdrop";
+import { WhatsAppFloat } from "./components/WhatsApp";
 import { useScrollTick } from "./hooks/useScroll";
 
 // -------- IMPORT YOUR LOGO HERE ----------
@@ -442,6 +443,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <WhatsAppFloat />
 
       {cartOpen && (
         <CartDrawer

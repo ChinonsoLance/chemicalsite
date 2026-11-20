@@ -1,7 +1,8 @@
 // Contact.jsx – working email (mailto) plus phone / WhatsApp routes.
 // Opens on the emerald band, then the channels and form sit on paper.
 import { useState } from "react";
-import { Phone, MessageCircle, Clock, ArrowRight } from "lucide-react";
+import { Phone, Clock, ArrowRight } from "lucide-react";
+import { WhatsAppIcon } from "./components/WhatsApp";
 import { Reveal, DrawRule, SplitHeading } from "./components/Motion";
 import Atmosphere from "./components/Atmosphere";
 
@@ -104,7 +105,7 @@ export default function Contact() {
               >
                 <div className="flex items-start gap-5">
                   <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-jade-500/12 text-jade-700">
-                    <MessageCircle className="h-5 w-5" />
+                    <WhatsAppIcon className="h-5 w-5" />
                   </span>
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-jade-700">

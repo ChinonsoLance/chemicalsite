@@ -9,6 +9,7 @@ import {
   MARQUEE_TERMS,
 } from "./data";
 import ProductCard from "./components/ProductCard";
+import { WhatsAppIcon } from "./components/WhatsApp";
 import Atmosphere from "./components/Atmosphere";
 import {
   Reveal,
@@ -651,6 +652,7 @@ function Closing() {
               rel="noopener noreferrer"
               className="btn-ghost inline-flex items-center gap-2.5 rounded-full px-9 py-4 text-[12px] uppercase tracking-[0.18em]"
             >
+              <WhatsAppIcon className="h-4 w-4" />
               WhatsApp Us
             </a>
           </div>
